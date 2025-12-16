@@ -24,11 +24,27 @@ public class TestBase {
     public final TestWatcher watcher = new TestWatcher() {
         @Override
         public void testFailed(ExtensionContext context, Throwable cause) {
-            if (page != null) {
-                byte[] screenshot = page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
-                Allure.addAttachment("Failure Screenshot", new ByteArrayInputStream(screenshot));
-                System.out.println(">>> Failure Screenshot Captured for: " + context.getDisplayName());
+            System.out.println(">>> ❌ Test Failed. Capturing screenshot...");
+            try {
+                if (page != null) {
+                    byte[] screenshot = page.screenshot(new Page.ScreenshotOptions().setFullPage(true));
+                    Allure.addAttachment("Failure Screenshot", new ByteArrayInputStream(screenshot));
+                }
+            } catch (Exception e) {
+                System.out.println(">>> Failed to take screenshot: " + e.getMessage());
+            } finally {
+                closeBrowser();
             }
+        }
+
+        @Override
+        public void testSuccessful(ExtensionContext context) {
+            closeBrowser();
+        }
+
+        @Override
+        public void testAborted(ExtensionContext context, Throwable cause) {
+            closeBrowser();
         }
     };
 
@@ -36,13 +52,17 @@ public class TestBase {
     void setup() throws IOException {
         String env = System.getProperty("env", "dev");
         props = new Properties();
+        if (env == null) env = "dev";
+        
         FileInputStream ip = new FileInputStream("src/test/resources/config-" + env.toLowerCase() + ".properties");
         props.load(ip);
 
         System.out.println(">>> Starting test on: " + env.toUpperCase());
 
         playwright = Playwright.create();
-        boolean isHeadless = Boolean.parseBoolean(getProperty("headless"));
+        
+        String headlessVal = getProperty("headless");
+        boolean isHeadless = (headlessVal != null) && Boolean.parseBoolean(headlessVal);
 
         browser = playwright.chromium().launch(
             new BrowserType.LaunchOptions().setHeadless(isHeadless)
@@ -52,11 +72,19 @@ public class TestBase {
         page = context.newPage();
     }
 
-    @AfterEach
-    void tearDown() {
-        if (context != null) context.close();
-        if (browser != null) browser.close();
-        if (playwright != null) playwright.close();
+    private void closeBrowser() {
+        if (context != null) {
+            context.close();
+            context = null;
+        }
+        if (browser != null) {
+            browser.close();
+            browser = null;
+        }
+        if (playwright != null) {
+            playwright.close();
+            playwright = null;
+        }
     }
 
     public String getProperty(String key) {
