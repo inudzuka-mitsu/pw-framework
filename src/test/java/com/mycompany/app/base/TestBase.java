@@ -5,6 +5,9 @@ import org.junit.jupiter.api.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
+import io.qameta.allure.Allure;
+import java.io.ByteArrayInputStream;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 public class TestBase {
     protected Playwright playwright;
@@ -34,13 +37,21 @@ public class TestBase {
         page = context.newPage();
     }
 
-    @AfterEach
-    void tearDown() {
-        if (context != null) context.close();
-        if (browser != null) browser.close();
-        if (playwright != null) playwright.close();
+@AfterEach
+void tearDown(ExtensionContext extensionContext) {
+
+    if (extensionContext.getExecutionException().isPresent()) {
+        if (page != null) {
+            byte[] screenshot = page.screenshot(new Page.ScreenshotOptions()
+                    .setFullPage(true));
+            Allure.addAttachment("Failure Screenshot", new ByteArrayInputStream(screenshot));
+        }
     }
 
+    if (context != null) context.close();
+    if (browser != null) browser.close();
+    if (playwright != null) playwright.close();
+}
     public String getProperty(String key) {
         String systemProp = System.getProperty(key);
         return (systemProp != null) ? systemProp : props.getProperty(key);
