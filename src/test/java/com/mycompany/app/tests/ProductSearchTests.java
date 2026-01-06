@@ -33,6 +33,7 @@ public class ProductSearchTests extends TestBase {
         modal.validateAllProductSuggestionsContainProductName(productName);
 
         hp.searchProduct();
+        pc.validateCurrentSelection(productName);
         pc.validateItemSearchResults(productName);
     }
 }

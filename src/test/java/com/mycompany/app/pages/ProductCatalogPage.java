@@ -14,6 +14,11 @@ public class ProductCatalogPage extends BasePage {
 
     String itemDescription = "div.search-item div.thumbProduct";
     String itemImage = "div.search-item a img";
+    String currentSelectionItem = "#leftNavCommon div.search-terms";
+
+    public void validateCurrentSelection(String searchQuery) {
+        assertEquals(searchQuery.toLowerCase(), page.locator(currentSelectionItem).innerText());
+    }
 
     public void validateItemSearchResults(String searchQuery) {
         Locator items = page.locator(itemDescription);
