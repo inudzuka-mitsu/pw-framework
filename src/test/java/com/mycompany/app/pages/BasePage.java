@@ -21,4 +21,10 @@ public class BasePage {
     public String getTitle() {
         return page.title();
     }
+
+    public void closePopUp() {
+        page.frameLocator("#attentive_creative")
+        .locator("#closeIconSvg")
+        .click();
+}
 }
