@@ -55,7 +55,7 @@ public class PersonalizeItemModal extends BasePage {
         modalFrame.locator(addToCartBtn).click();
     }
 
-    public void fillPersonalizationAndAddToCart(String color, String font, String name) throws InterruptedException {
+    public void fillPersonalizationAndAddToCart(String color, String font, String name) {
         selectThreadColor(color);
         selectFont(font);
         enterName(name);

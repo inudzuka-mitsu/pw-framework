@@ -34,7 +34,7 @@ public class ProductPersonalizationTests extends TestBase {
     private final int QUANTITY = 3;
 
     @Test
-    void personalizeItem() throws InterruptedException {
+    void personalizeItem() {
         stagingLoginPage = new StagingLoginPage(page);
         signInPage = new SignInPage(page);
         productPage = new ProductPage(page);
@@ -61,7 +61,7 @@ public class ProductPersonalizationTests extends TestBase {
         stagingLoginPage.closePopUp();
 
         page.navigate(PRODUCT_URL);
-        productPage.click("button#personalizeBtn");
+        productPage.clickPersonalizeBtn();
 
         personalizeModal.fillPersonalizationAndAddToCart(THREAD_COLOR, FONT_STYLE, PERSONALIZATION_TEXT);
         giftBoxModal.selectClassicGiftBox();
@@ -76,7 +76,7 @@ public class ProductPersonalizationTests extends TestBase {
         signInPage.signIn(testEmail, testPassword);
 
         shippingPage.selectFirstAddressAndShip();
-        shippingPage.click("input#ctl00_belowHeader_saveContinueBtn");
+        shippingPage.clickSaveAndContinue();
 
         checkoutPage.applyCoupon(couponCode);
         checkoutPage.enterPaymentInformation(cardType, cardName, cardNumber, securityCode, cardExpMonth, cardExpYear);
