@@ -27,7 +27,7 @@ public class ProductPersonalizationTests extends TestBase {
     private CheckoutPage checkoutPage;
     private OrderConfirmationPage confirmationPage;
 
-    private final String PRODUCT_URL = "https://staging-www.personalizationmall.com/Winter-Wonderland-Personalized-Christmas-Stockings-p30508.prod?sdest=Search&sdestid=179238038";
+    private final String PRODUCT_URL = getProperty("baseUrl") + "/Winter-Wonderland-Personalized-Christmas-Stockings-p30508.prod?sdest=Search&sdestid=179238038";
     private final String THREAD_COLOR = "Lilac";
     private final String FONT_STYLE = "Frunch";
     private final String PERSONALIZATION_TEXT = "QATest";
@@ -56,7 +56,7 @@ public class ProductPersonalizationTests extends TestBase {
         String cardExpMonth = getProperty("card_exp_month");
         String cardExpYear = getProperty("card_exp_year");
 
-        page.navigate(getProperty("baseUrl"));
+        page.navigate(getProperty("stagingLoginUrl"));
         stagingLoginPage.login(getProperty("username"), getProperty("password"));
         stagingLoginPage.closePopUp();
 
