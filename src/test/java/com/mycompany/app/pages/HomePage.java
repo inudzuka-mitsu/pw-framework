@@ -12,6 +12,7 @@ public class HomePage extends BasePage {
 
     private final String searchBar = "#searchBox";
     private final String viewCartButton = ".block__added-to-cart a[href*='Cart.aspx']";
+    private final String checkoutBtn = ".block__added-to-cart a[href*='Checkout.aspx']";
     private final String addedToCartHeader = "#ctl00_mainContent_itemAddedToCart_txtTitle";
     private final String personalizationDetails = "#ctl00_mainContent_itemAddedToCart_txtAddToCartPers";
 
@@ -26,6 +27,10 @@ public class HomePage extends BasePage {
 
     public void clickViewCart() {
         page.locator(viewCartButton).click(new Locator.ClickOptions().setForce(true));
+    }
+
+    public void clickCheckout() {
+        page.locator(checkoutBtn).click(new Locator.ClickOptions().setForce(true));
     }
 
     public void validateAddedToCartVisible() {
