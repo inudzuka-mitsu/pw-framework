@@ -1,6 +1,7 @@
 package com.mycompany.app.tests;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.mycompany.app.base.TestBase;
@@ -35,6 +36,7 @@ public class GiftSetTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Verify user can personalize a gift set, save it for later and move it back to cart")
     void giftSetPersonalizationFlow() {
         String testEmail = getProperty("test_email_2");
         String testPassword = getProperty("test_password_2");
