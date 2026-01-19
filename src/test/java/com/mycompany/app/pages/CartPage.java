@@ -21,10 +21,11 @@ public class CartPage extends BasePage {
     private final String proceedToCheckoutBtn = "a.begin-checkout:has-text('Proceed To Checkout')";
 
     private final String saveForLaterLink = "ul.list__prev-edit a:has-text('Save for later')";
+    
     private final String moveToCartLink = "#ctl00_mainContent_savedItemsList .block__saveto-cart .moveSavedItem";
-
     private final String savedItemsContainer = "#ctl00_mainContent_savedItemsList";
     private final String emptyCartContainer = "#ctl00_mainContent_cartEmpty";
+    private final String savedNotificationText = "#ctl00_mainContent_orderItemsSavedContent2019_notificationsList li";
 
     public double getItemPrice() {
         return parsePrice(page.locator(itemPriceText).innerText());
@@ -82,6 +83,7 @@ public class CartPage extends BasePage {
                 System.out.println("Standard click intercepted by overlay. Attempting JS click...");
                 saveLink.dispatchEvent("click");
             }
+
         } catch (Exception e) {
             System.out.println("Failed to click 'Save for later'. Error: " + e.getMessage());
         }
@@ -122,5 +124,15 @@ public class CartPage extends BasePage {
 
         assertThat(emptyContainer.locator("a:has-text('Continue Shopping')")).isVisible();
         assertThat(emptyContainer.locator("a:has-text('Homepage')")).isVisible();
+        
+        Locator notification = page.locator(savedNotificationText);
+        assertThat(notification).isVisible();
+        assertThat(notification).containsText("Requested item has been put into saved items list");
+    }
+
+    public void validateProductInCart(String productName) {
+        Locator cartItemTitle = page.locator(".block__shopping-cart h3 a")
+                                    .filter(new Locator.FilterOptions().setHasText(productName));
+        assertThat(cartItemTitle).isVisible();
     }
 }

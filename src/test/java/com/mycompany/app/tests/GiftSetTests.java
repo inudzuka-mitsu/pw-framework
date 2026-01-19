@@ -1,5 +1,7 @@
 package com.mycompany.app.tests;
 
+import java.io.IOException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +28,8 @@ public class GiftSetTests extends TestBase {
     private final String PERSONALIZATION_MSG = "Happy Birthday!";
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
+        super.setup();
         stagingLoginPage = new StagingLoginPage(page);
         productPage = new ProductPage(page);
         personalizeModal = new PersonalizeItemModal(page);
@@ -71,15 +74,12 @@ public class GiftSetTests extends TestBase {
 
         signInPage.signIn(testEmail, testPassword);
 
-        if(!page.url().contains("Cart.aspx")) {
-             homePage.clickViewCart();
-        }
-        
         cartPage.clickSaveForLater(); 
 
         cartPage.validateEmptyCartAndSavedMessage();
         cartPage.validateProductInSavedForLater(PRODUCT_NAME);
 
         cartPage.clickMoveToCart();
+        cartPage.validateProductInCart(PRODUCT_NAME);
     }
 }

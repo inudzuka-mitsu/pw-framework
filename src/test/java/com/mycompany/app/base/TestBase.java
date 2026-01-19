@@ -23,7 +23,7 @@ public class TestBase {
     protected Browser browser;
     protected BrowserContext context;
     protected Page page;
-    protected Properties props;
+    public Properties props;
 
     @RegisterExtension
     public final TestWatcher watcher = new TestWatcher() {
@@ -54,7 +54,7 @@ public class TestBase {
     };
 
     @BeforeEach
-    void setup() throws IOException {
+    public void setup() throws IOException {
         String env = System.getProperty("env", "dev");
         props = new Properties();
         if (env == null) env = "dev";

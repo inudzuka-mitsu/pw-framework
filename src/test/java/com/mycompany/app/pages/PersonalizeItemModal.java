@@ -108,7 +108,7 @@ public class PersonalizeItemModal extends BasePage {
         enterGiftSetName(name);
         enterMonogram(monogram);
         Thread.sleep(5000);
-        //verifyGiftSetPreviewImage(monogram, name);
+        verifyGiftSetPreviewImage(monogram, name);
         clickContinue();
         Thread.sleep(5000);
     }
