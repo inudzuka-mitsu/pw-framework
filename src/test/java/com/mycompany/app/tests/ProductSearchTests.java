@@ -12,9 +12,6 @@ package com.mycompany.app.tests;
 
 //     @Test
 //     void searchForProduct() {
-//         String username = getProperty("username");
-//         String password = getProperty("password");
-//         String loginUrl = getProperty("stagingLoginUrl");
 
 //         StagingLoginPage lp = new StagingLoginPage(page);
 //         HomePage hp = new HomePage(page);
@@ -23,8 +20,7 @@ package com.mycompany.app.tests;
 
 //         String productName = "Socks";
 
-//         page.navigate(loginUrl);
-//         lp.login(username, password);
+//         page.navigate(getProperty("stagingBaseUrl"));
 //         lp.closePopUp();
 //         hp.typeProduct(productName);
 

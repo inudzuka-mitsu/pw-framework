@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import com.microsoft.playwright.options.WaitForSelectorState;
 
 public class CartPage extends BasePage {
 
@@ -18,6 +19,12 @@ public class CartPage extends BasePage {
     private final String boxPriceText = ".li__gift-box span.reg";
     private final String totalPriceText = ".li__item-total .sp__amt-total";
     private final String proceedToCheckoutBtn = "a.begin-checkout:has-text('Proceed To Checkout')";
+
+    private final String saveForLaterLink = "ul.list__prev-edit a:has-text('Save for later')";
+    private final String moveToCartLink = "#ctl00_mainContent_savedItemsList .block__saveto-cart .moveSavedItem";
+
+    private final String savedItemsContainer = "#ctl00_mainContent_savedItemsList";
+    private final String emptyCartContainer = "#ctl00_mainContent_cartEmpty";
 
     public double getItemPrice() {
         return parsePrice(page.locator(itemPriceText).innerText());
@@ -59,5 +66,61 @@ public class CartPage extends BasePage {
     private double parsePrice(String priceText) {
         if (priceText == null || priceText.isEmpty()) return 0.0;
         return Double.parseDouble(priceText.replaceAll("[^\\d.]", ""));
+    }
+
+    public void clickSaveForLater() {
+        Locator saveLink = page.locator(saveForLaterLink).first();
+
+        try {
+            saveLink.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.ATTACHED)
+                .setTimeout(5000));
+            saveLink.scrollIntoViewIfNeeded();
+            try {
+                saveLink.click(new Locator.ClickOptions().setForce(true).setTimeout(2000));
+            } catch (Exception clickError) {
+                System.out.println("Standard click intercepted by overlay. Attempting JS click...");
+                saveLink.dispatchEvent("click");
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to click 'Save for later'. Error: " + e.getMessage());
+        }
+    }
+
+    public void clickMoveToCart() {
+        Locator moveLink = page.locator(moveToCartLink).first();
+        
+        try {
+            moveLink.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.VISIBLE)
+                .setTimeout(5000));
+            moveLink.scrollIntoViewIfNeeded();
+            try {
+                moveLink.click(new Locator.ClickOptions().setForce(true).setTimeout(2000));
+            } catch (Exception clickError) {
+                System.out.println("Standard click on 'Move To Cart' intercepted. Attempting JS click...");
+                moveLink.dispatchEvent("click");
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to click 'Move To Cart'. Error: " + e.getMessage());
+        }
+    }
+
+    public void validateProductInSavedForLater(String productName) {
+        Locator container = page.locator(savedItemsContainer);
+        container.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        Locator firstSavedProductTitle = container.locator(".block__saveto-cart").first().locator("h3 a");
+        assertThat(firstSavedProductTitle).containsText(productName);
+    }
+
+    public void validateEmptyCartAndSavedMessage() {
+        Locator emptyContainer = page.locator(emptyCartContainer);
+        assertThat(emptyContainer).isVisible();
+
+        assertThat(emptyContainer).containsText("Currently, there are no items in your shopping cart!");
+        assertThat(emptyContainer).containsText("Return to our Home Page to find the perfect, personalized gift!");
+
+        assertThat(emptyContainer.locator("a:has-text('Continue Shopping')")).isVisible();
+        assertThat(emptyContainer.locator("a:has-text('Homepage')")).isVisible();
     }
 }

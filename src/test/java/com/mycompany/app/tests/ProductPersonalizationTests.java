@@ -57,8 +57,7 @@ public class ProductPersonalizationTests extends TestBase {
 
         String PRODUCT_URL = getProperty("baseUrl") + "/Winter-Wonderland-Personalized-Christmas-Stockings-p30508.prod?sdest=Search&sdestid=179238038";
 
-        page.navigate(getProperty("stagingLoginUrl"));
-        stagingLoginPage.login(getProperty("username"), getProperty("password"));
+        page.navigate(getProperty("stagingBaseUrl"));
         stagingLoginPage.closePopUp();
 
         page.navigate(PRODUCT_URL);
