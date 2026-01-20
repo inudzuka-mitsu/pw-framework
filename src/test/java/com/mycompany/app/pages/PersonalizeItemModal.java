@@ -82,7 +82,7 @@ public class PersonalizeItemModal extends BasePage {
                 .setState(WaitForSelectorState.VISIBLE)
                 .setTimeout(3000));
             
-            checkbox.check();
+            checkbox.check(new Locator.CheckOptions().setForce(true));
         } catch (Exception e) {
         }
     }

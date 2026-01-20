@@ -2,6 +2,7 @@ package com.mycompany.app.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class AddressModal extends BasePage {
 
@@ -13,6 +14,7 @@ public class AddressModal extends BasePage {
     private final String saveAndContinueBtn = "input#ctl00_belowHeader_saveContinueBtn";
     private final String addressTextLocator = ".cstAddress";
     private final String addressCardContainer = ".itembox";
+    private final String addNewAddressBtn = "#ctl00_belowHeader_viewAddressBookControl_btn_addnewaddress";
 
     public void selectFirstAddressAndShip() {
         page.locator(shipToAddressBtn).first().click(new Locator.ClickOptions().setForce(true));
@@ -60,5 +62,23 @@ public class AddressModal extends BasePage {
 
     public void clickSaveAndContinue() {
         page.locator(saveAndContinueBtn).click();
+    }
+
+    public void clickAddNewAddress() {
+        page.locator(addNewAddressBtn).click();
+    }
+
+    public void validateLastAddress(String nickname, String firstName, String lastName, 
+                                    String address, String city, String state, String zip, String phone) {
+        Locator lastCard = page.locator(addressCardContainer).last();
+        Locator addressBlock = lastCard.locator(addressTextLocator);
+        
+        assertThat(addressBlock).containsText(nickname);
+        assertThat(addressBlock).containsText(firstName + " " + lastName); // Name is usually combined
+        assertThat(addressBlock).containsText(address);
+        assertThat(addressBlock).containsText(city);
+        assertThat(addressBlock).containsText(state);
+        assertThat(addressBlock).containsText(zip);
+        assertThat(addressBlock).containsText(phone);
     }
 }

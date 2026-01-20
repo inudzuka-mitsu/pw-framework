@@ -28,6 +28,7 @@ public class GiftSetTests extends TestBase {
     private final String PERSONALIZATION_MSG = "Happy Birthday!";
 
     @BeforeEach
+    @Override
     public void setup() throws IOException {
         super.setup();
         stagingLoginPage = new StagingLoginPage(page);
