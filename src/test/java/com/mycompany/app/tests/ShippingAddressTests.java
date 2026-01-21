@@ -1,7 +1,10 @@
 package com.mycompany.app.tests;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitUntilState;
 import com.mycompany.app.base.TestBase;
 import com.mycompany.app.pages.AccountPage;
 import com.mycompany.app.pages.AddAddressPage;
@@ -17,6 +20,7 @@ public class ShippingAddressTests extends TestBase {
     private AddressModal shippingPage;
 
     @Test
+    @DisplayName("Verify user can add a new shipping address")
     void addShippingAddress() {
         signInPage = new SignInPage(page);
         addAddressPage = new AddAddressPage(page);
@@ -52,6 +56,7 @@ public class ShippingAddressTests extends TestBase {
             state,
             zipCode
         );
+        addAddressPage.clickAddAddress();
 
         page.navigate(getProperty("baseUrl") + "/AddressBook.aspx");
         shippingPage.validateLastAddress(addressNickname,
@@ -63,4 +68,60 @@ public class ShippingAddressTests extends TestBase {
             state,
             zipCode);
     }
-}
+
+    @Test
+    @DisplayName("Verify user can edit a shipping address")
+    void editShippingAddress() throws InterruptedException {
+        signInPage = new SignInPage(page);
+        addAddressPage = new AddAddressPage(page);
+        shippingPage = new AddressModal(page);
+        accountPage = new AccountPage(page);
+
+        String testEmail = getProperty("test_email_2");
+        String testPassword = getProperty("test_password_2");
+
+        String addressNickname = "QA Test Updated" + System.currentTimeMillis();
+        String firstName = "New";
+        String lastName = "Name";
+        String phoneNumber = "3125550199";
+        String streetAddress = "123 W Madison St";
+        String city = "Chicago";
+        String state = "IL";
+        String zipCode = "60602";
+
+        int addressToEditIndex = 2;
+
+        page.navigate(getProperty("stagingBaseUrl"), 
+            new Page.NavigateOptions().setWaitUntil(WaitUntilState.DOMCONTENTLOADED));
+    
+        page.navigate(getProperty("baseUrl") + "/Register.aspx?");
+    
+        signInPage.signIn(testEmail, testPassword);
+
+        accountPage.clickManageShippingAddress();
+        shippingPage.editAddress(addressToEditIndex);
+        
+        addAddressPage.fillNewAddressFormAndSubmit(
+            addressNickname,
+            firstName,
+            lastName,
+            phoneNumber,
+            streetAddress,
+            city,
+            state,
+            zipCode
+        );
+        addAddressPage.clickSaveAddress();
+
+        page.navigate(getProperty("baseUrl") + "/AddressBook.aspx");
+
+        shippingPage.validateAddress(addressToEditIndex, addressNickname,
+            firstName,
+            lastName,
+            phoneNumber,
+            streetAddress,
+            city,
+            state,
+            zipCode);
+    }
+ }

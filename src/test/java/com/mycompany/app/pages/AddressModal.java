@@ -60,6 +60,11 @@ public class AddressModal extends BasePage {
         return cleanAddress;
     }
 
+    public void editAddress(int index) {
+        Locator firstCard = page.locator(addressCardContainer).nth(index);
+        firstCard.locator("input[value='Edit']").click(new Locator.ClickOptions().setForce(true));
+    }
+
     public void clickSaveAndContinue() {
         page.locator(saveAndContinueBtn).click();
     }
@@ -74,7 +79,21 @@ public class AddressModal extends BasePage {
         Locator addressBlock = lastCard.locator(addressTextLocator);
         
         assertThat(addressBlock).containsText(nickname);
-        assertThat(addressBlock).containsText(firstName + " " + lastName); // Name is usually combined
+        assertThat(addressBlock).containsText(firstName + " " + lastName);
+        assertThat(addressBlock).containsText(address);
+        assertThat(addressBlock).containsText(city);
+        assertThat(addressBlock).containsText(state);
+        assertThat(addressBlock).containsText(zip);
+        assertThat(addressBlock).containsText(phone);
+    }
+
+    public void validateAddress(int index, String nickname, String firstName, String lastName, 
+                                    String address, String city, String state, String zip, String phone) {
+        Locator lastCard = page.locator(addressCardContainer).nth(index);
+        Locator addressBlock = lastCard.locator(addressTextLocator);
+        
+        assertThat(addressBlock).containsText(nickname);
+        assertThat(addressBlock).containsText(firstName + " " + lastName);
         assertThat(addressBlock).containsText(address);
         assertThat(addressBlock).containsText(city);
         assertThat(addressBlock).containsText(state);
