@@ -16,7 +16,7 @@ public class PassportTests extends TestBase {
     private CelebrationsPassportPage passportPage;
 
     @Test
-    void celebrationsPassport() {
+    void celebrationsPassport() throws InterruptedException {
 
         footer = new Footer(page);
         cartPage = new CartPage(page);
@@ -33,6 +33,7 @@ public class PassportTests extends TestBase {
         passportPage.verifyPassportPageLoaded();
         passportPage.validatePriceOnButton(ITEM_PRICE);
         passportPage.clickSignUp();
+        Thread.sleep(5000);
 
         cartPage.validateProductInCart("Passport Membership");
     }

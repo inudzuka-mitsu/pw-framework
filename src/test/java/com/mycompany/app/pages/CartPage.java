@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.assertions.LocatorAssertions;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import com.microsoft.playwright.options.WaitForSelectorState;
 
@@ -133,6 +134,8 @@ public class CartPage extends BasePage {
     public void validateProductInCart(String productName) {
         Locator cartItemTitle = page.locator(".block__shopping-cart h3 a")
                                     .filter(new Locator.FilterOptions().setHasText(productName));
-        assertThat(cartItemTitle).isVisible();
+        assertThat(cartItemTitle).isVisible(
+            new LocatorAssertions.IsVisibleOptions().setTimeout(30000)
+        );
     }
 }

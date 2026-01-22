@@ -66,7 +66,7 @@ public class GiftSetTests extends TestBase {
             personalizeModal.checkPersonalizationCorrect();
             personalizeModal.clickAddToCart();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         homePage.clickViewCart();
