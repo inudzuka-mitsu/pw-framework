@@ -1,8 +1,9 @@
-package com.mycompany.app.pages;
+package com.mycompany.app.pages.modals_popups;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import com.mycompany.app.pages.BasePage;
 
 public class AddressModal extends BasePage {
 

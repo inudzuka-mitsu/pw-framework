@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 import com.mycompany.app.base.TestBase;
 import com.mycompany.app.pages.CartPage;
 import com.mycompany.app.pages.HomePage;
-import com.mycompany.app.pages.PersonalizeItemModal;
 import com.mycompany.app.pages.ProductPage;
-import com.mycompany.app.pages.SignInPage;
-import com.mycompany.app.pages.StagingLoginPage;
+import com.mycompany.app.pages.login.SignInPage;
+import com.mycompany.app.pages.login.StagingLoginPage;
+import com.mycompany.app.pages.modals_popups.PersonalizeItemModal;
 
 public class GiftSetTests extends TestBase {
 

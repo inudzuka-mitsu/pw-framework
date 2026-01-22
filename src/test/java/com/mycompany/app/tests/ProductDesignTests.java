@@ -4,16 +4,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.mycompany.app.base.TestBase;
-import com.mycompany.app.pages.AddressModal;
+import com.mycompany.app.pages.CartPage;
 import com.mycompany.app.pages.CheckoutPage;
-import com.mycompany.app.pages.DesignPopup;
+import com.mycompany.app.pages.DesignMugPage;
 import com.mycompany.app.pages.DesignToolPage;
 import com.mycompany.app.pages.EditorPage;
 import com.mycompany.app.pages.HomePage;
 import com.mycompany.app.pages.OrderConfirmationPage;
 import com.mycompany.app.pages.ProductPage;
-import com.mycompany.app.pages.SignInPage;
-import com.mycompany.app.pages.StagingLoginPage;
+import com.mycompany.app.pages.login.SignInPage;
+import com.mycompany.app.pages.login.StagingLoginPage;
+import com.mycompany.app.pages.modals_popups.AddressModal;
+import com.mycompany.app.pages.modals_popups.DesignPopup;
+import com.mycompany.app.pages.modals_popups.PersonalizeItemModal;
 
 public class ProductDesignTests extends TestBase {
 
@@ -27,6 +30,9 @@ public class ProductDesignTests extends TestBase {
     private AddressModal shippingPage;
     private CheckoutPage checkoutPage;
     private OrderConfirmationPage confirmationPage;
+    private DesignMugPage designMugPage;
+    private PersonalizeItemModal personalizeModal;
+    private CartPage cartPage;
 
     @Test
     @DisplayName("Verify user can design a wedding photo book and complete checkout")
@@ -119,5 +125,37 @@ public class ProductDesignTests extends TestBase {
         String secondAddress = shippingPage.selectSecondAddressAndReturnText();
         shippingPage.clickSaveAndContinue();
         checkoutPage.validateShippingAddress(secondAddress);
+    }
+
+    @Test
+    @DisplayName("Verify user can design a coffee mug")
+    void designMug() {
+        String PRODUCT_URL = getProperty("baseUrl") + "/Design-Your-Own-Personalized-Coffee-Mug-11oz-White-i39099.item?productid=14671";
+
+        designMugPage = new DesignMugPage(page);
+        stagingLoginPage = new StagingLoginPage(page);
+        productPage = new ProductPage(page);
+        personalizeModal = new PersonalizeItemModal(page);
+        homePage = new HomePage(page);
+        cartPage = new CartPage(page);
+
+        page.navigate(getProperty("stagingBaseUrl"));
+        stagingLoginPage.closePopUp();
+
+        page.navigate(PRODUCT_URL);
+
+        productPage.validateDefaultHandleColor("White Handle");
+        productPage.clickStartDesigning();
+
+        designMugPage.clickSkip();
+        designMugPage.clickProceed();
+
+        personalizeModal.selectNoGiftBox();
+        personalizeModal.checkPersonalizationCorrect();
+        personalizeModal.clickAddToCart();
+
+        homePage.clickViewCart();
+
+        cartPage.validateProductInCart("Design Your Own Personalized Coffee Mug- 11oz. White");
     }
 }

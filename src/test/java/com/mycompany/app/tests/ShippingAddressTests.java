@@ -8,8 +8,8 @@ import com.microsoft.playwright.options.WaitUntilState;
 import com.mycompany.app.base.TestBase;
 import com.mycompany.app.pages.AccountPage;
 import com.mycompany.app.pages.AddAddressPage;
-import com.mycompany.app.pages.AddressModal;
-import com.mycompany.app.pages.SignInPage;
+import com.mycompany.app.pages.login.SignInPage;
+import com.mycompany.app.pages.modals_popups.AddressModal;
 
 
 public class ShippingAddressTests extends TestBase {

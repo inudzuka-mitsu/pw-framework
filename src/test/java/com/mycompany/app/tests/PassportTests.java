@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import com.mycompany.app.base.TestBase;
 import com.mycompany.app.pages.CartPage;
 import com.mycompany.app.pages.CelebrationsPassportPage;
-import com.mycompany.app.pages.Footer;
-import com.mycompany.app.pages.StagingLoginPage;
+import com.mycompany.app.pages.login.StagingLoginPage;
+import com.mycompany.app.pages.modals_popups.Footer;
 
 public class PassportTests extends TestBase {
 

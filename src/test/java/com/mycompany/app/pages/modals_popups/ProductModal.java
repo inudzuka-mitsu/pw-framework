@@ -1,10 +1,11 @@
-package com.mycompany.app.pages;
+package com.mycompany.app.pages.modals_popups;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.mycompany.app.pages.BasePage;
 
 public class ProductModal extends BasePage{
 

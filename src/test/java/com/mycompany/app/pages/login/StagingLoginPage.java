@@ -1,6 +1,7 @@
-package com.mycompany.app.pages;
+package com.mycompany.app.pages.login;
 
 import com.microsoft.playwright.Page;
+import com.mycompany.app.pages.BasePage;
 
 public class StagingLoginPage extends BasePage {
 

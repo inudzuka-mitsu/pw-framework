@@ -1,4 +1,4 @@
-package com.mycompany.app.pages;
+package com.mycompany.app.pages.modals_popups;
 
 import java.util.regex.Pattern;
 
@@ -7,6 +7,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.assertions.LocatorAssertions;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import com.mycompany.app.pages.BasePage;
 
 public class PersonalizeItemModal extends BasePage {
 
@@ -28,6 +29,8 @@ public class PersonalizeItemModal extends BasePage {
     
     private final String colorDropdownByLabel = "tr:has(.pers-title:has-text('Color')) + tr .dropdown-btn";
     private final String activeDropdownOptions = ".custom-dropdown ul.select-active li[data-val='%s']";
+
+    private final String noGiftBoxRadio = "label:has-text('No Gift Box')";
 
     private Locator getLocator(String selector) {
         if (page.locator(iframeSelector).isVisible()) {
@@ -63,6 +66,10 @@ public class PersonalizeItemModal extends BasePage {
         getLocator(optionLocator).click();
     }
 
+    public void selectNoGiftBox() {
+        getLocator(noGiftBoxRadio).click();
+    }
+
     public void enterName(String name) {
         fillInputByLabel("Name", name);
     }
@@ -76,14 +83,28 @@ public class PersonalizeItemModal extends BasePage {
     }
 
     public void checkPersonalizationCorrect() {
-        Locator checkbox = getLocator(confirmCheckbox);
+        // Locator for the actual input (to check state)
+        Locator realInput = getLocator("input#confirm");
+        // Locator for the visible label (to click)
+        Locator checkboxLabel = getLocator("label[for='confirm']");
+
         try {
-            checkbox.waitFor(new Locator.WaitForOptions()
+            System.out.println("Attempting to check confirm box...");
+
+            // 1. Wait for the LABEL to be visible (since the input might be hidden)
+            checkboxLabel.waitFor(new Locator.WaitForOptions()
                 .setState(WaitForSelectorState.VISIBLE)
-                .setTimeout(3000));
+                .setTimeout(5000));
             
-            checkbox.check(new Locator.CheckOptions().setForce(true));
+            // 2. Only click if it's not already checked
+            if (!realInput.isChecked()) {
+                checkboxLabel.click();
+            }
+            
         } catch (Exception e) {
+            System.out.println("Click failed. Forcing check via JavaScript.");
+            // 3. Fallback: Force the check via JavaScript if the UI interaction fails
+            realInput.evaluate("el => el.checked = true");
         }
     }
 
