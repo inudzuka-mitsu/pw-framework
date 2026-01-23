@@ -19,6 +19,9 @@ public class AddAddressPage extends BasePage {
     private final String addAddressBtn = "#cmdAddAddress";
     private final String saveAddress = "#cmdSaveAddress";
 
+    private final String confirmCheckbox = "input#checkConfirm";
+    private final String useThisAddressBtn = "input#cmdUseThisAddress";
+
     public void clickAddAddress() {
         page.locator(addAddressBtn).click();
     }
@@ -45,5 +48,10 @@ public class AddAddressPage extends BasePage {
         
         page.locator(zipInput).clear();
         page.locator(zipInput).fill(zip);
+    }
+
+    public void confirmVerifiedAddress() {
+        page.locator(confirmCheckbox).check(new com.microsoft.playwright.Locator.CheckOptions().setForce(true));
+        page.locator(useThisAddressBtn).click();
     }
 }

@@ -12,6 +12,7 @@ public class SignInPage extends BasePage {
 
     private final String emailInput = "input[id*='Email']";
     private final String passwordInput = "input[id*='Password']";
+    private final String guestNewAccountBtn = "[name='ctl00$belowHeader$Button2']";
 
     public void enterEmail(String email) {
         page.locator(emailInput).fill(email);
@@ -19,6 +20,10 @@ public class SignInPage extends BasePage {
 
     public void enterPassword(String password) {
         page.locator(passwordInput).fill(password);
+    }
+
+    public void clickGuestNewAcc() {
+        page.locator(guestNewAccountBtn).click();
     }
 
     public void clickSignIn() {
