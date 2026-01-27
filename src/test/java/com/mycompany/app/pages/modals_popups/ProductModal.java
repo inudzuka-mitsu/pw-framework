@@ -15,7 +15,7 @@ public class ProductModal extends BasePage{
 
     String categoryName = "div.ea-sug-category-name";
     String productItem = "div.ea-sug-product-name";
-    String productSuggestions = "div.ea-sug-section ul li";
+    String productSuggestions = "div[class='ea-sug-section'] ul li";
 
     public void validateCategoryName(String expected) {
         String actualText = page.locator(categoryName).innerText();

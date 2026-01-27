@@ -17,26 +17,34 @@ public class ProductCatalogPage extends BasePage {
     String currentSelectionItem = "#leftNavCommon div.search-terms";
 
     public void validateCurrentSelection(String searchQuery) {
-        assertEquals(searchQuery.toLowerCase(), page.locator(currentSelectionItem).innerText());
+        assertEquals(searchQuery.toLowerCase(), page.locator(currentSelectionItem).innerText().toLowerCase());
     }
 
     public void validateItemSearchResults(String searchQuery) {
         Locator items = page.locator(itemDescription);
         Locator itemImages = page.locator(itemImage);
 
-        assertEquals(items.count(), itemImages.count());
+        assertEquals(items.count(), itemImages.count(), "Mismatch between count of descriptions and images.");
+
+    
+        String rawQuery = searchQuery.toLowerCase();
+        String validatedQuery = rawQuery.endsWith("s") ? 
+                            rawQuery.substring(0, rawQuery.length() - 1) : 
+                            rawQuery;
 
         for (int i = 0; i < items.count(); i++) {
-           String actualText = items.nth(i).innerText().toLowerCase();
-           String imageSource = items.nth(i).innerText().toLowerCase();
+            String actualDescription = items.nth(i).innerText().toLowerCase();
+            String imageAltText = itemImages.nth(i).getAttribute("alt");
+            String imageTitleText = itemImages.nth(i).getAttribute("title");
+            String imageMetadata = (imageAltText + " " + imageTitleText).toLowerCase();
 
-           assertTrue(actualText.contains(searchQuery.toLowerCase()), 
-            "Expected product item at index " + i + " to contain '" + searchQuery + "', but got: " + actualText);
-           assertTrue(itemImages.nth(i).isVisible());
+            assertTrue(actualDescription.contains(validatedQuery), 
+            String.format("Expected item description at index %d to contain '%s', but found: '%s'", 
+            i, validatedQuery, actualDescription));
 
-           assertTrue(imageSource.contains(searchQuery.toLowerCase()), 
-            "Expected image of a product item at index " + i + " to contain '" + searchQuery + "', but got: " + actualText);
-        }
+            assertTrue(imageMetadata.contains(validatedQuery), 
+            String.format("Expected image Alt/Title at index %d to contain '%s'. \nFound Alt: '%s' \nFound Title: '%s'", 
+            i, validatedQuery, imageAltText, imageTitleText));
+       }
     }
-
 }

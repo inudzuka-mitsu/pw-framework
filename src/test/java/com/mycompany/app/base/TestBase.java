@@ -55,9 +55,9 @@ public class TestBase {
 
     @BeforeEach
     public void setup() throws IOException {
-        String env = System.getProperty("env", "dev");
+        String env = System.getProperty("env", "stg");
         props = new Properties();
-        if (env == null) env = "dev";
+        if (env == null) env = "stg";
         
         FileInputStream ip = new FileInputStream("src/test/resources/config-" + env.toLowerCase() + ".properties");
         props.load(ip);
