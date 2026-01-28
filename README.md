@@ -44,7 +44,13 @@ mvn clean test -Denv=stg
 mvn clean test -Dheadless=true
 ```
 
-### 4. Generate reports
+### 4. Run smoke tests only
+
+```bash
+mvn clean test -Denv=stg -Dgroups="smoke"
+```
+
+### 5. Generate reports
 
 ```bash
 mvn allure:serve
