@@ -1,5 +1,6 @@
 package com.mycompany.app.tests;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.mycompany.app.base.TestBase;
@@ -16,6 +17,7 @@ public class PassportTests extends TestBase {
     private CelebrationsPassportPage passportPage;
 
     @Test
+    @Tag("smoke")
     void celebrationsPassport() throws InterruptedException {
 
         footer = new Footer(page);
