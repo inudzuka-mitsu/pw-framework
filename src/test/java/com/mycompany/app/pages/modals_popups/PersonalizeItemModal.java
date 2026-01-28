@@ -83,27 +83,22 @@ public class PersonalizeItemModal extends BasePage {
     }
 
     public void checkPersonalizationCorrect() {
-        // Locator for the actual input (to check state)
-        Locator realInput = getLocator("input#confirm");
-        // Locator for the visible label (to click)
-        Locator checkboxLabel = getLocator("label[for='confirm']");
+        Locator realInput = getLocator("input#checkConfirm");
+        Locator checkboxLabel = getLocator("label[for='checkConfirm']");
 
         try {
             System.out.println("Attempting to check confirm box...");
 
-            // 1. Wait for the LABEL to be visible (since the input might be hidden)
             checkboxLabel.waitFor(new Locator.WaitForOptions()
                 .setState(WaitForSelectorState.VISIBLE)
                 .setTimeout(5000));
             
-            // 2. Only click if it's not already checked
             if (!realInput.isChecked()) {
                 checkboxLabel.click();
             }
             
         } catch (Exception e) {
             System.out.println("Click failed. Forcing check via JavaScript.");
-            // 3. Fallback: Force the check via JavaScript if the UI interaction fails
             realInput.evaluate("el => el.checked = true");
         }
     }

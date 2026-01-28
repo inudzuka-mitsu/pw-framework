@@ -2,6 +2,7 @@ package com.mycompany.app.pages.modals_popups;
 
 import java.nio.file.Paths;
 
+import com.microsoft.playwright.FileChooser;
 import com.microsoft.playwright.FrameLocator;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -16,6 +17,12 @@ public class PhotoUploadModal extends BasePage {
     private final String saveButton = "#saveCrop"; 
     private final String loadingSpinner = "#previewloadingImg";
     private final String photoNameDisplay = ".select-photo-name";
+
+    private final String uploadVideoBtn = "#uploadVideoBtn";
+    private final String videoInput = "#uploadVideoInput";
+    private final String addVideoToProductBtn = "#submitUploadVideo";
+    private final String videoPreviewBlock = ".video-preview-block";
+
 
     public PhotoUploadModal(Page page) {
         super(page);
@@ -65,4 +72,31 @@ public class PhotoUploadModal extends BasePage {
             return false;
         }
     }
+
+    
+    public void uploadVideo(String absoluteFilePath) {
+    System.out.println("Starting video upload (native picker detected)...");
+    FrameLocator frame = getFrame();
+
+    if (!Paths.get(absoluteFilePath).toFile().exists()) {
+        throw new RuntimeException("Video file not found: " + absoluteFilePath);
+    }
+
+    // IMPORTANT: waitForFileChooser must wrap the click
+    FileChooser chooser = page.waitForFileChooser(() -> {
+        frame.locator(uploadVideoBtn).click();
+    });
+
+    System.out.println("Setting video file: " + absoluteFilePath);
+    chooser.setFiles(Paths.get(absoluteFilePath));
+
+    // Wait for processing UI
+    Locator videoPreview = frame.locator(".video-preview-block, [data-video-step='3']");
+    videoPreview.waitFor(new Locator.WaitForOptions()
+            .setState(WaitForSelectorState.VISIBLE)
+            .setTimeout(60000));
+
+    frame.locator(addVideoToProductBtn).click();
+}
+
 }

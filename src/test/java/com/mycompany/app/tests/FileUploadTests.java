@@ -43,8 +43,8 @@ public class FileUploadTests extends TestBase {
         photoUploadModal.uploadPhoto(photoPath);
         photoUploadModal.validatePhotoUploaded();
 
-        // photoUploadModal.uploadVideo(videoPath);
-        // photoUploadModal.validateVideoIsUploaded();
+        photoUploadModal.uploadVideo(videoPath);
+        //photoUploadModal.validateVideoUploaded();
 
         // personalizeModal.clickAddToCart();
 
