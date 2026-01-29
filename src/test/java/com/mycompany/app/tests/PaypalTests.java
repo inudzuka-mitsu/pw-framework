@@ -1,23 +1,23 @@
-package com.mycompany.app.tests;
+// package com.mycompany.app.tests;
 
-import com.mycompany.app.base.TestBase;
-import com.mycompany.app.pages.CheckoutPage;
-import com.mycompany.app.pages.HomePage;
-import com.mycompany.app.pages.login.SignInPage;
-import com.mycompany.app.pages.login.StagingLoginPage;
-import com.mycompany.app.pages.modals_popups.AddressModal;
+// import com.mycompany.app.base.TestBase;
+// import com.mycompany.app.pages.CheckoutPage;
+// import com.mycompany.app.pages.HomePage;
+// import com.mycompany.app.pages.login.SignInPage;
+// import com.mycompany.app.pages.login.StagingLoginPage;
+// import com.mycompany.app.pages.modals_popups.AddressModal;
 
 /*
        This test is commented out, because Paypal implements checks on whether a human uses the app or a robot. Such checks should not be automated. 
 */
 
-public class PaypalTests extends TestBase {
+//public class PaypalTests extends TestBase {
 
-    private StagingLoginPage stagingLoginPage;
-    private HomePage homePage;
-    private SignInPage signInPage;
-    private AddressModal shippingPage;
-    private CheckoutPage checkoutPage;
+    // private StagingLoginPage stagingLoginPage;
+    // private HomePage homePage;
+    // private SignInPage signInPage;
+    // private AddressModal shippingPage;
+    // private CheckoutPage checkoutPage;
 
     // @Test
     // @DisplayName("Validate user can sucecssfully pay for a product with Paypal")
@@ -51,4 +51,4 @@ public class PaypalTests extends TestBase {
 
     //     page.pause();
     // }
-}
+//}
