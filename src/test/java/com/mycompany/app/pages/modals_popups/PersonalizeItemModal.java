@@ -1,5 +1,7 @@
 package com.mycompany.app.pages.modals_popups;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import com.microsoft.playwright.Locator;
@@ -22,7 +24,6 @@ public class PersonalizeItemModal extends BasePage {
     private final String fontDropdown = "div[data-select='pers159021']";
     private final String fontOptionPattern = "#ul_pers159021 li[data-val='%s']";
     private final String productImage = "#productImage";
-    private final String confirmCheckbox = "input#checkConfirm";
     
     private final String addToCartBtn = "[name='ctl00$mainContent$addToCart$addToCartButton']";
     private final String continueButton = "a#cmdAddonGiftBox";
@@ -130,16 +131,32 @@ public class PersonalizeItemModal extends BasePage {
     }
 
     public void verifyPreviewImagePersonalization(String color, String font, String name) {
-        String safeColor = color.replace(" ", "+").replace("+", "\\+");
-        String safeFont = font.replace(" ", "+").replace("+", "\\+");
-        String safeName = name.replace(" ", "+").replace("+", "\\+");
+        List<String> activeParams = new ArrayList<>();
+        
+        if (color != null && !color.isEmpty()) activeParams.add(color);
+        if (font != null && !font.isEmpty()) activeParams.add(font);
+        if (name != null && !name.isEmpty()) activeParams.add(name);
 
-        String regex = String.format(".*value1=%s.*value2=%s.*value3=%s.*", safeColor, safeFont, safeName);
-        Pattern srcPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        StringBuilder regexBuilder = new StringBuilder(".*");
+
+        for (int i = 0; i < activeParams.size(); i++) {
+            int valueIndex = i + 1; 
+            String safeValue = escapeForRegex(activeParams.get(i));
+            regexBuilder.append("value").append(valueIndex).append("=").append(safeValue).append(".*");
+        }
+
+        String finalRegex = regexBuilder.toString();
+        System.out.println("Validating Image Src with Dynamic Regex: " + finalRegex);
+
+        Pattern srcPattern = Pattern.compile(finalRegex, Pattern.CASE_INSENSITIVE);
 
         assertThat(getLocator(productImage))
             .hasAttribute("src", srcPattern, 
                 new LocatorAssertions.HasAttributeOptions().setTimeout(20000));
+    }
+
+    private String escapeForRegex(String input) {
+        return input.replace(" ", "+").replace("+", "\\+");
     }
 
     public void verifyGiftSetPreviewImage(String monogram, String name) {

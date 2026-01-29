@@ -22,6 +22,7 @@ public class CartPage extends BasePage {
     private final String proceedToCheckoutBtn = "a.begin-checkout:has-text('Proceed To Checkout')";
 
     private final String saveForLaterLink = "ul.list__prev-edit a:has-text('Save for later')";
+    private final String editLink = "ul.list__prev-edit a:has-text('Edit')";
     
     private final String moveToCartLink = "#ctl00_mainContent_savedItemsList .block__saveto-cart .moveSavedItem";
     private final String savedItemsContainer = "#ctl00_mainContent_savedItemsList";
@@ -87,6 +88,26 @@ public class CartPage extends BasePage {
 
         } catch (Exception e) {
             System.out.println("Failed to click 'Save for later'. Error: " + e.getMessage());
+        }
+    }
+
+    public void clickEdit() {
+        Locator saveLink = page.locator(editLink).first();
+
+        try {
+            saveLink.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.ATTACHED)
+                .setTimeout(5000));
+            saveLink.scrollIntoViewIfNeeded();
+            try {
+                saveLink.click(new Locator.ClickOptions().setForce(true).setTimeout(2000));
+            } catch (Exception clickError) {
+                System.out.println("Standard click intercepted by overlay. Attempting JS click...");
+                saveLink.dispatchEvent("click");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Failed to click 'Edit' link. Error: " + e.getMessage());
         }
     }
 

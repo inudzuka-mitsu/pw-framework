@@ -14,7 +14,7 @@ public class HomePage extends BasePage {
     private final String viewCartButton = ".block__added-to-cart a[href*='Cart.aspx']";
     private final String checkoutBtn = ".block__added-to-cart a[href*='Checkout.aspx']";
     private final String addedToCartHeader = "#ctl00_mainContent_itemAddedToCart_txtTitle";
-    private final String personalizationDetails = "#ctl00_mainContent_itemAddedToCart_txtAddToCartPers";
+    private final String personalizationDetails = "#ctl00_mainContent_itemAddedToCart_txtAddToCartPers, #ctl00_belowHeader_itemUpdatedInfoControl_txtAddToCartPers";
 
     public void typeProduct(String productName) {
        page.locator(searchBar).click();
@@ -40,8 +40,16 @@ public class HomePage extends BasePage {
 
     public void validatePersonalization(String color, String font, String name) {
         Locator details = page.locator(personalizationDetails);
-        assertThat(details).containsText(color);
-        assertThat(details).containsText(font);
-        assertThat(details).containsText(name);
+        if (color != null && !color.isEmpty()) {
+            assertThat(details).containsText(color);
+        }
+
+        if (font != null && !font.isEmpty()) {
+            assertThat(details).containsText(font);
+        }
+
+        if (name != null && !name.isEmpty()) {
+            assertThat(details).containsText(name);
+        }
     }
 }

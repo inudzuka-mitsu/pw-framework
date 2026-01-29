@@ -32,7 +32,11 @@ public class ProductPersonalizationTests extends TestBase {
     private final String PERSONALIZATION_TEXT = "QATest";
     private final int QUANTITY = 3;
 
-    @Test
+    private final String ORIGINAL_THREAD_COLOR = "Burgundy";
+    private final String PERSONALIZATION_TEXT_2 = "QATest_2";
+    private final String UPDATED_THREAD_COLOR = "White";
+
+   @Test
     void personalizeItem() {
         stagingLoginPage = new StagingLoginPage(page);
         signInPage = new SignInPage(page);
@@ -83,5 +87,47 @@ public class ProductPersonalizationTests extends TestBase {
         checkoutPage.placeOrder();
 
         confirmationPage.verifyOrderSuccessMessage();
+    }
+
+    @Test
+    void editItem() {
+        stagingLoginPage = new StagingLoginPage(page);
+        signInPage = new SignInPage(page);
+        productPage = new ProductPage(page);
+        personalizeModal = new PersonalizeItemModal(page);
+        giftBoxModal = new CustomizeGiftModal(page);
+        homePage = new HomePage(page);
+        cartPage = new CartPage(page);
+        shippingPage = new AddressModal(page);
+        checkoutPage = new CheckoutPage(page);
+        confirmationPage = new OrderConfirmationPage(page);
+
+        String PRODUCT_URL = getProperty("baseUrl") + "/Crossed-Clubs-Embroidered-Golf-Towel-p28855.prod?sdest=search-op&sdestid=117478940";
+
+        page.navigate(getProperty("stagingBaseUrl"));
+        stagingLoginPage.closePopUp();
+
+        page.navigate(PRODUCT_URL);
+        productPage.clickPersonalizeBtn();
+
+        personalizeModal.enterName(PERSONALIZATION_TEXT_2);
+        personalizeModal.selectColor(ORIGINAL_THREAD_COLOR);
+        personalizeModal.verifyPreviewImagePersonalization(ORIGINAL_THREAD_COLOR, null, PERSONALIZATION_TEXT_2);
+        personalizeModal.checkPersonalizationCorrect();
+        personalizeModal.clickAddToCart();
+        personalizeModal.clickContinue();
+
+        homePage.validatePersonalization(ORIGINAL_THREAD_COLOR, null, PERSONALIZATION_TEXT_2);
+
+        homePage.clickViewCart();
+
+        cartPage.clickEdit();
+
+        personalizeModal.selectColor(UPDATED_THREAD_COLOR);
+        personalizeModal.verifyPreviewImagePersonalization(UPDATED_THREAD_COLOR, null, PERSONALIZATION_TEXT_2);
+        personalizeModal.checkPersonalizationCorrect();
+        personalizeModal.clickAddToCart();
+
+        homePage.validatePersonalization(UPDATED_THREAD_COLOR, null, PERSONALIZATION_TEXT_2);
     }
 }
