@@ -25,7 +25,7 @@ public class PersonalizeItemModal extends BasePage {
     private final String confirmCheckbox = "input#checkConfirm";
     
     private final String addToCartBtn = "[name='ctl00$mainContent$addToCart$addToCartButton']";
-    private final String continueButton = "input#ctl00_mainContent_addToCart_addToCartButton";
+    private final String continueButton = "a#cmdAddonGiftBox";
     
     private final String colorDropdownByLabel = "tr:has(.pers-title:has-text('Color')) + tr .dropdown-btn";
     private final String activeDropdownOptions = ".custom-dropdown ul.select-active li[data-val='%s']";
