@@ -12,12 +12,10 @@ public class DesignPopup extends BasePage {
     }
 
     private final String iframeSelector = "#app_iframe"; 
-    private final String modalContainer = ".ModalsContainer.PresentationValidatorPopup";
     private final String titleText = ".popup-title-row";
     private final String subtitleText = ".popup-subtitle-row";
     private final String descriptionText = ".popup-description-row";
     private final String confirmationCheckbox = "span[data-sid='validationPopupCheckBox']";
-    private final String checkboxInput = "input#I\\ am\\ sure\\,\\ everything\\ is\\ fine\\."; 
     private final String proceedButton = "div[data-sid='validationPopupConfirm']";
 
     public void handleValidationPopup() {

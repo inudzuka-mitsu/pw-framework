@@ -2,6 +2,7 @@ package com.mycompany.app.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitForSelectorState;
 
 public class CheckoutPage extends BasePage {
 
@@ -18,9 +19,11 @@ public class CheckoutPage extends BasePage {
     private final String cvvInput = "#ctl00_belowHeader_validationNumber";
     private final String expMonthDropdown = "#ctl00_belowHeader_expMonth";
     private final String expYearDropdown = "#ctl00_belowHeader_expYear";
-    private final String placeOrderBtn = "#cmdPlaceOrder";
+    private final String placeOrderBtn = "#cmdPlaceOrder"; 
     private final String changeShippingAddressLink = "#ctl00_belowHeader_aChangeShipAddress";
     private final String shippingAddressText = "#ctl00_belowHeader_txtShippingAddress";
+    private final String payPalRadio = "#ctl00_belowHeader_payPalRadioButton";
+    private final String payPalPlaceOrderBtn = "#cmdPayPal2Order"; 
 
     public void applyCoupon(String code) {
         page.locator(couponInput).fill(code);
@@ -35,6 +38,16 @@ public class CheckoutPage extends BasePage {
         page.locator(cvvInput).fill(cvv);
         page.locator(expMonthDropdown).selectOption(month);
         page.locator(expYearDropdown).selectOption(year);
+    }
+
+    public void placeOrderWithPayPal() {
+        System.out.println("Selecting PayPal payment method...");
+        page.locator(payPalRadio).click(new Locator.ClickOptions().setForce(true));
+        Locator ppButton = page.locator(payPalPlaceOrderBtn);
+        ppButton.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+
+        System.out.println("Clicking 'Place Order' (PayPal version)...");
+        ppButton.click(new Locator.ClickOptions().setForce(true));
     }
 
     public void placeOrder() {
