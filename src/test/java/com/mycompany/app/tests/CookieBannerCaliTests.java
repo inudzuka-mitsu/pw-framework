@@ -1,5 +1,6 @@
 package com.mycompany.app.tests;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.APIResponse;
@@ -15,6 +16,7 @@ import com.mycompany.app.pages.login.StagingLoginPage;
 public class CookieBannerCaliTests extends TestBase {
 
     @Test
+    @DisplayName("Validate users in California can see a cookie banner upon navigation to the website")
     public void testCaliforniaCookieBanner() {
         BrowserContext caContext = browser.newContext();
         Page caPage = caContext.newPage();

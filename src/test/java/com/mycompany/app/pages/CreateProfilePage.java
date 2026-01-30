@@ -17,10 +17,8 @@ public class CreateProfilePage extends BasePage {
     private final String passwordInput = "#ctl00_belowHeader_txtPassword";
     private final String passwordConfirmInput = "#ctl00_belowHeader_txtPassword2";
 
-    private final String billSalutationSelect = "#ctl00_belowHeader_txtBillSalutation";
     private final String billFirstNameInput = "#ctl00_belowHeader_txtBillFirstName";
     private final String billLastNameInput = "#ctl00_belowHeader_txtBillLastName";
-    private final String billCompanyInput = "#ctl00_belowHeader_txtBillCompany"; 
     private final String billAddress1Input = "#ctl00_belowHeader_txtBillAddress1";
     private final String billAddress2Input = "#ctl00_belowHeader_txtBillAddress2"; 
     private final String billCityInput = "#ctl00_belowHeader_txtBillCity";
