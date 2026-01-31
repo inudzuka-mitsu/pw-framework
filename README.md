@@ -31,7 +31,7 @@ mvn clean test
 ```
 
 ### 2. Run on Specific Environment
-To switch environments (e.g., QA, Staging), pass the env property. This loads the corresponding config file (e.g., config-qa.properties).
+To switch environments (e.g., QA, Staging), pass the env property. This loads the corresponding config file (e.g., config-stg.properties).
 
 ```bash
 mvn clean test -Denv=qa
