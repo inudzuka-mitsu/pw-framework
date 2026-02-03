@@ -16,9 +16,15 @@ public class HomePage extends BasePage {
     private final String addedToCartHeader = "#ctl00_mainContent_itemAddedToCart_txtTitle";
     private final String personalizationDetails = "#ctl00_mainContent_itemAddedToCart_txtAddToCartPers, #ctl00_belowHeader_itemUpdatedInfoControl_txtAddToCartPers";
 
+    private final String forHerNavLink = ".nav-list > .nav-item > a:text-is('For Her')";
+
     public void typeProduct(String productName) {
        page.locator(searchBar).click();
        page.locator(searchBar).fill(productName);
+    }
+
+    public void clickForHer() {
+        page.locator(forHerNavLink).click();
     }
 
     public void searchProduct() {
