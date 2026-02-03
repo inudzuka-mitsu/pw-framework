@@ -17,6 +17,7 @@ public class CookieBannerCaliTests extends TestBase {
 
     @Test
     @DisplayName("Validate users in California can see a cookie banner upon navigation to the website")
+    @SuppressWarnings("ConvertToTryWithResources")
     public void testCaliforniaCookieBanner() {
         BrowserContext caContext = browser.newContext();
         Page caPage = caContext.newPage();

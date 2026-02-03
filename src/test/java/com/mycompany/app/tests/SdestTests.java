@@ -21,6 +21,7 @@ public class SdestTests extends TestBase {
     private ProductCatalogPage pcp;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setupPages() {
         stagingLoginPage = new StagingLoginPage(page);
         homePage = new HomePage(page);

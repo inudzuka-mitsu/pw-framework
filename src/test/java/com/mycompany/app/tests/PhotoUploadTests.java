@@ -32,7 +32,6 @@ public class PhotoUploadTests extends TestBase {
         stagingLoginPage.closePopUp();
 
         page.navigate(PRODUCT_URL);
-        page.pause();
         productPage.clickPersonalizeBtn();
 
         photoEditorPage.clickAddPhotoLater();
