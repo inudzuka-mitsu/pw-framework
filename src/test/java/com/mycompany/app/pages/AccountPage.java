@@ -9,8 +9,13 @@ public class AccountPage extends BasePage {
     }
 
     private final String manageShippingAddressLink = "a:has-text('Manage my shipping address')";
+    private final String orderHistoryLink = "a:has-text('Order History')";
 
     public void clickManageShippingAddress() {
         page.locator(manageShippingAddressLink).first().click();
+    }
+
+    public void clickOrderHistory() {
+        page.locator(orderHistoryLink).first().click();
     }
 }
