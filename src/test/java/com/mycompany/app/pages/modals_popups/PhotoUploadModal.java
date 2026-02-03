@@ -82,7 +82,6 @@ public class PhotoUploadModal extends BasePage {
         throw new RuntimeException("Video file not found: " + absoluteFilePath);
     }
 
-    // IMPORTANT: waitForFileChooser must wrap the click
     FileChooser chooser = page.waitForFileChooser(() -> {
         frame.locator(uploadVideoBtn).click();
     });
@@ -90,7 +89,6 @@ public class PhotoUploadModal extends BasePage {
     System.out.println("Setting video file: " + absoluteFilePath);
     chooser.setFiles(Paths.get(absoluteFilePath));
 
-    // Wait for processing UI
     Locator videoPreview = frame.locator(".video-preview-block, [data-video-step='3']");
     videoPreview.waitFor(new Locator.WaitForOptions()
             .setState(WaitForSelectorState.VISIBLE)

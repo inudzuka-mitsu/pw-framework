@@ -154,7 +154,7 @@ public class CartPage extends BasePage {
 
     public void validateProductInCart(String productName) {
         Locator cartItemTitle = page.locator(".block__shopping-cart h3 a")
-                                    .filter(new Locator.FilterOptions().setHasText(productName));
+                                    .filter(new Locator.FilterOptions().setHasText(productName)).first();
         assertThat(cartItemTitle).isVisible(
             new LocatorAssertions.IsVisibleOptions().setTimeout(30000)
         );
