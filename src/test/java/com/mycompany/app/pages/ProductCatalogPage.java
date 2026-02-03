@@ -15,6 +15,7 @@ public class ProductCatalogPage extends BasePage {
     String itemDescription = "div.search-item div.thumbProduct";
     String itemImage = "div.search-item a img";
     String currentSelectionItem = "#leftNavCommon div.search-terms";
+    String productLink = "div.search-item a";
 
     public void validateCurrentSelection(String searchQuery) {
         assertEquals(searchQuery.toLowerCase(), page.locator(currentSelectionItem).innerText().toLowerCase());
@@ -46,5 +47,9 @@ public class ProductCatalogPage extends BasePage {
             String.format("Expected image Alt/Title at index %d to contain '%s'. \nFound Alt: '%s' \nFound Title: '%s'", 
             i, validatedQuery, imageAltText, imageTitleText));
        }
+    }
+
+    public void clickFirstProduct() {
+        page.locator(productLink).first().click();
     }
 }
