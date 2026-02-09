@@ -55,3 +55,8 @@ mvn clean test -Denv=stg -Dgroups="smoke"
 ```bash
 mvn allure:serve
 ```
+### 6. Run mobile tests
+
+```bash
+mvn clean test -Denv=stg -Ddevice.name="iPhone 13 Pro Max"
+```
