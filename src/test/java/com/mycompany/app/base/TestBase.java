@@ -3,6 +3,8 @@ package com.mycompany.app.base;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +26,23 @@ public class TestBase {
     protected BrowserContext context;
     protected Page page;
     public Properties props;
+
+    private static final Map<String, Browser.NewContextOptions> DEVICE_MAP = new HashMap<>();
+
+    static {
+        DEVICE_MAP.put("iPhone 13 Pro Max", new Browser.NewContextOptions()
+            .setUserAgent("Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1")
+            .setViewportSize(428, 926)
+            .setDeviceScaleFactor(3)
+            .setIsMobile(true)
+            .setHasTouch(true));
+        DEVICE_MAP.put("Samsung Galaxy A52", new Browser.NewContextOptions()
+            .setUserAgent("Mozilla/5.0 (Linux; Android 12; SM-A525F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Mobile Safari/537.36")
+            .setViewportSize(412, 915)
+            .setDeviceScaleFactor(3)
+            .setIsMobile(true)
+            .setHasTouch(true));
+    }
 
     @RegisterExtension
     public final TestWatcher watcher = new TestWatcher() {
@@ -73,7 +92,22 @@ public class TestBase {
             new BrowserType.LaunchOptions().setHeadless(isHeadless)
         );
 
-        context = browser.newContext();
+        String deviceName = getProperty("device.name"); 
+        Browser.NewContextOptions options;
+
+        if (deviceName != null && !deviceName.isEmpty()) {
+            System.out.println(">>> Emulating Mobile Device: " + deviceName);
+            
+            options = DEVICE_MAP.get(deviceName);
+            
+            if (options == null) {
+                throw new RuntimeException("Device '" + deviceName + "' not defined in TestBase.DEVICE_MAP. Please add it.");
+            }
+        } else {
+            options = new Browser.NewContextOptions();
+        }
+
+        context = browser.newContext(options);
         page = context.newPage();
     }
 
