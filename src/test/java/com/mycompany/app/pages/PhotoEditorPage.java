@@ -97,7 +97,7 @@ public class PhotoEditorPage extends BasePage {
     public void clickContinue() {
         System.out.println("Clicking 'Continue'...");
 
-        Locator btn = getEditorFrame().locator(continueBtn);
+        Locator btn = getEditorFrame().locator("a#cmdAddonGiftBoxV3");
         btn.waitFor();
         btn.click();
     }
