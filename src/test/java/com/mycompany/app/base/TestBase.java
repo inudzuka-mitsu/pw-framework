@@ -89,7 +89,9 @@ public class TestBase {
         boolean isHeadless = (headlessVal != null) && Boolean.parseBoolean(headlessVal);
 
         browser = playwright.chromium().launch(
-            new BrowserType.LaunchOptions().setHeadless(isHeadless)
+            new BrowserType.LaunchOptions()
+                .setHeadless(isHeadless)
+                .setArgs(java.util.List.of("--disable-blink-features=AutomationControlled"))
         );
 
         String deviceName = getProperty("device.name"); 
@@ -104,7 +106,8 @@ public class TestBase {
                 throw new RuntimeException("Device '" + deviceName + "' not defined in TestBase.DEVICE_MAP. Please add it.");
             }
         } else {
-            options = new Browser.NewContextOptions();
+            options = new Browser.NewContextOptions()
+                .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36");
         }
 
         context = browser.newContext(options);

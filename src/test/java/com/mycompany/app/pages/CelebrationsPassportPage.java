@@ -1,6 +1,5 @@
 package com.mycompany.app.pages;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -13,10 +12,7 @@ public class CelebrationsPassportPage extends BasePage {
     private final String signUpButton = "button#btn_add-free-ship";
 
     public void clickSignUp() {
-        System.out.println("Executing native JS click on Sign Up...");
-        Locator button = page.locator(signUpButton);
-        
-        button.evaluate("node => node.click()"); 
+        page.locator(signUpButton).click();
     }
 
     public void verifyPassportPageLoaded() {

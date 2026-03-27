@@ -3,6 +3,7 @@ package com.mycompany.app.tests;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import com.microsoft.playwright.options.LoadState;
 import com.mycompany.app.base.TestBase;
 import com.mycompany.app.pages.CartPage;
 import com.mycompany.app.pages.CelebrationsPassportPage;
@@ -31,12 +32,17 @@ public class PassportTests extends TestBase {
         stagingLoginPage.closePopUp();
 
         footer.clickCelebrationsPassport();
-
-        passportPage.verifyPassportPageLoaded();
+        page.waitForLoadState(LoadState.LOAD);
         passportPage.validatePriceOnButton(ITEM_PRICE);
-        Thread.sleep(5000);
+
+        page.waitForLoadState(LoadState.LOAD);
+
+        page.waitForResponse(
+           response -> response.url().contains("cart") && response.status() == 200, 
+           () -> {
         passportPage.clickSignUp();
-        Thread.sleep(5000);
+         }
+        );
 
         cartPage.validateProductInCart("Passport Membership");
     }
