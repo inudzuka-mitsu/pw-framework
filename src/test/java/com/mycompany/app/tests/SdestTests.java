@@ -21,7 +21,6 @@ public class SdestTests extends TestBase {
     private ProductCatalogPage pcp;
 
     @BeforeEach
-    @SuppressWarnings("unused")
     void setupPages() {
         stagingLoginPage = new StagingLoginPage(page);
         homePage = new HomePage(page);
@@ -49,8 +48,10 @@ public class SdestTests extends TestBase {
 
         homePage.typeProduct(searchQuery);
         homePage.searchProduct();
+    
+        page.waitForTimeout(10000);
         pcp.clickFirstProduct();
 
-        assertThat(page).hasURL(Pattern.compile(".*productid=.*&sdest=.*&sdestid=.*"));
+        assertThat(page).hasURL(Pattern.compile(".*-p\\d+\\.prod\\?sdest=.*&sdestid=.*"));
     }
 }
