@@ -34,6 +34,7 @@ public class PassportTests extends TestBase {
 
         passportPage.verifyPassportPageLoaded();
         passportPage.validatePriceOnButton(ITEM_PRICE);
+        Thread.sleep(5000);
         passportPage.clickSignUp();
         Thread.sleep(5000);
 
