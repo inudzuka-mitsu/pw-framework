@@ -36,58 +36,58 @@ public class ProductPersonalizationTests extends TestBase {
     private final String PERSONALIZATION_TEXT_2 = "QATest_2";
     private final String UPDATED_THREAD_COLOR = "White";
 
-//    @Test
-//     void personalizeItem() {
-//         stagingLoginPage = new StagingLoginPage(page);
-//         signInPage = new SignInPage(page);
-//         productPage = new ProductPage(page);
-//         personalizeModal = new PersonalizeItemModal(page);
-//         giftBoxModal = new CustomizeGiftModal(page);
-//         homePage = new HomePage(page);
-//         cartPage = new CartPage(page);
-//         shippingPage = new AddressModal(page);
-//         checkoutPage = new CheckoutPage(page);
-//         confirmationPage = new OrderConfirmationPage(page);
+   @Test
+    void personalizeItem() {
+        stagingLoginPage = new StagingLoginPage(page);
+        signInPage = new SignInPage(page);
+        productPage = new ProductPage(page);
+        personalizeModal = new PersonalizeItemModal(page);
+        giftBoxModal = new CustomizeGiftModal(page);
+        homePage = new HomePage(page);
+        cartPage = new CartPage(page);
+        shippingPage = new AddressModal(page);
+        checkoutPage = new CheckoutPage(page);
+        confirmationPage = new OrderConfirmationPage(page);
 
-//         String testEmail = getProperty("test_email");
-//         String testPassword = getProperty("test_password");
-//         String couponCode = getProperty("sale_item_coupon_code");
-//         String cardType = getProperty("card_type");
-//         String cardName = getProperty("name");
-//         String cardNumber = getProperty("card_number");
-//         String securityCode = getProperty("card_security_code");
-//         String cardExpMonth = getProperty("card_exp_month");
-//         String cardExpYear = getProperty("card_exp_year");
+        String testEmail = getProperty("test_email");
+        String testPassword = getProperty("test_password");
+        String couponCode = getProperty("sale_item_coupon_code");
+        String cardType = getProperty("card_type");
+        String cardName = getProperty("name");
+        String cardNumber = getProperty("card_number");
+        String securityCode = getProperty("card_security_code");
+        String cardExpMonth = getProperty("card_exp_month");
+        String cardExpYear = getProperty("card_exp_year");
 
-//         String PRODUCT_URL = getProperty("baseUrl") + "/Winter-Wonderland-Personalized-Christmas-Stockings-p30508.prod?sdest=Search&sdestid=179238038";
+        String PRODUCT_URL = getProperty("baseUrl") + "/Winter-Wonderland-Personalized-Christmas-Stockings-p30508.prod?sdest=Search&sdestid=179238038";
 
-//         page.navigate(getProperty("stagingBaseUrl"));
-//         stagingLoginPage.closePopUp();
+        page.navigate(getProperty("stagingBaseUrl"));
+        stagingLoginPage.closePopUp();
 
-//         page.navigate(PRODUCT_URL);
-//         productPage.clickPersonalizeBtn();
+        page.navigate(PRODUCT_URL);
+        productPage.clickPersonalizeBtn();
 
-//         personalizeModal.fillPersonalizationAndAddToCart(THREAD_COLOR, FONT_STYLE, PERSONALIZATION_TEXT);
-//         giftBoxModal.selectClassicGiftBox();
-//         giftBoxModal.clickContinue();
+        personalizeModal.fillPersonalizationAndAddToCart(THREAD_COLOR, FONT_STYLE, PERSONALIZATION_TEXT);
+        giftBoxModal.selectClassicGiftBox();
+        giftBoxModal.clickContinue();
 
-//         homePage.validateAddedToCartVisible();
-//         homePage.validatePersonalization(THREAD_COLOR, FONT_STYLE, PERSONALIZATION_TEXT);
-//         homePage.clickViewCart();
-//         cartPage.updateQuantityAndVerifyTotal(QUANTITY);
-//         cartPage.clickProceedToCheckout();
+        homePage.validateAddedToCartVisible();
+        homePage.validatePersonalization(THREAD_COLOR, FONT_STYLE, PERSONALIZATION_TEXT);
+        homePage.clickViewCart();
+        cartPage.updateQuantityAndVerifyTotal(QUANTITY);
+        cartPage.clickProceedToCheckout();
 
-//         signInPage.signIn(testEmail, testPassword);
+        signInPage.signIn(testEmail, testPassword);
 
-//         shippingPage.selectFirstAddressAndShip();
-//         shippingPage.clickSaveAndContinue();
+        shippingPage.selectFirstAddressAndShip();
+        shippingPage.clickSaveAndContinue();
 
-//         checkoutPage.applyCoupon(couponCode);
-//         checkoutPage.enterPaymentInformation(cardType, cardName, cardNumber, securityCode, cardExpMonth, cardExpYear);
-//         checkoutPage.placeOrder();
+        checkoutPage.applyCoupon(couponCode);
+        checkoutPage.enterPaymentInformation(cardType, cardName, cardNumber, securityCode, cardExpMonth, cardExpYear);
+        checkoutPage.placeOrder();
 
-//         confirmationPage.verifyOrderSuccessMessage();
-//     }
+        confirmationPage.verifyOrderSuccessMessage();
+    }
 
     @Test
     void editItem() {
