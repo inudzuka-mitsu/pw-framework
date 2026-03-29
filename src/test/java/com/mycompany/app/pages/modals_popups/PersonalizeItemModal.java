@@ -85,28 +85,21 @@ public class PersonalizeItemModal extends BasePage {
     }
 
     public void checkPersonalizationCorrect() {
-        Locator realInput = getLocator("input#checkConfirm");
-        Locator checkboxLabel = getLocator("label[for='checkConfirm']");
-
-        try {
-            System.out.println("Attempting to check confirm box...");
-
-            checkboxLabel.waitFor(new Locator.WaitForOptions()
-                .setState(WaitForSelectorState.VISIBLE)
-                .setTimeout(5000));
-            
-            if (!realInput.isChecked()) {
-                checkboxLabel.click();
-            }
-            
-        } catch (Exception e) {
-            System.out.println("Click failed. Forcing check via JavaScript.");
-            realInput.evaluate("el => el.checked = true");
-        }
+        System.out.println(">>> Confirming personalization...");
+        Locator confirmLabel = getLocator("label:has-text('The personalization I entered is correct')").first();
+        confirmLabel.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        confirmLabel.click();
     }
 
     public void clickContinue() {
-        getLocator(continueButton).click();
+        System.out.println(">>> Waiting for the Continue button to become enabled...");
+        Locator btn = getLocator(continueButton);
+        
+        btn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        assertThat(btn).isEnabled(); // Ensures async photo processing is totally complete
+        
+        System.out.println(">>> Button is enabled. Clicking Continue...");
+        btn.click();
     }
 
     public void clickContinueBtn() {
@@ -114,7 +107,14 @@ public class PersonalizeItemModal extends BasePage {
     }
 
     public void clickAddToCart() {
-        getLocator(addToCartBtn).click();
+        System.out.println(">>> Waiting for the Add to Cart button to become enabled...");
+        Locator btn = getLocator(addToCartBtn);
+        
+        btn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        assertThat(btn).isEnabled(); // Ensures async photo processing is totally complete
+        
+        System.out.println(">>> Button is enabled. Clicking Add to Cart...");
+        btn.click();
     }
 
     public void fillPersonalizationAndAddToCart(String color, String font, String name) {

@@ -51,7 +51,14 @@ public class CheckoutPage extends BasePage {
     }
 
     public void placeOrder() {
-        page.locator(placeOrderBtn).click(new Locator.ClickOptions().setForce(true));
+        System.out.println(">>> Preparing to click Place Order...");
+        
+        Locator orderButton = page.locator(placeOrderBtn);
+        
+        orderButton.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        orderButton.scrollIntoViewIfNeeded();
+        
+        orderButton.click();
     }
 
     public void clickChangeShippingAddress() {
