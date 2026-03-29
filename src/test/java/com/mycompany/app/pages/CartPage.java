@@ -159,4 +159,12 @@ public class CartPage extends BasePage {
             new LocatorAssertions.IsVisibleOptions().setTimeout(30000)
         );
     }
+
+    public void validateProductAddedToCart(String productName) {
+        Locator cartItemTitle = page.locator(".block.block__added-to-cart #ctl00_mainContent_itemAddedToCart_txtAddToCartProduct")
+                                    .filter(new Locator.FilterOptions().setHasText(productName)).first();
+        assertThat(cartItemTitle).isVisible(
+            new LocatorAssertions.IsVisibleOptions().setTimeout(30000)
+        );
+    }
 }
