@@ -15,15 +15,24 @@ public class DesignPopup extends BasePage {
     private final String titleText = ".popup-title-row";
     private final String subtitleText = ".popup-subtitle-row";
     private final String descriptionText = ".popup-description-row";
-    private final String confirmationCheckbox = "span[data-sid='validationPopupCheckBox']";
-    private final String proceedButton = "div[data-sid='validationPopupConfirm']";
+    private final String confirmationCheckboxLabel = "span[data-sid='validationPopupCheckBox'] label"; 
+    private final String proceedButton = "button[data-sid='popupDrawerPrimaryButton']";
 
     public void handleValidationPopup() {
+        System.out.println(">>> Handling validation popup...");
         FrameLocator frame = page.frameLocator(iframeSelector);
+        
+        frame.locator(titleText).waitFor();
+
         assertThat(frame.locator(titleText)).hasText("Oops!");
         assertThat(frame.locator(subtitleText)).hasText("Your project contains some minor flaws.");
         assertThat(frame.locator(descriptionText)).containsText("Please review them carefully before ordering.");
-        frame.locator(confirmationCheckbox).click();
+        
+        frame.locator(confirmationCheckboxLabel).click();
+        
+        assertThat(frame.locator(proceedButton)).isEnabled();
         frame.locator(proceedButton).click();
+        
+        System.out.println(">>> Validation popup cleared.");
     }
 }
