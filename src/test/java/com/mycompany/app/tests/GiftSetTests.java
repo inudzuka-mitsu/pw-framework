@@ -75,12 +75,15 @@ public class GiftSetTests extends TestBase {
 
         signInPage.signIn(testEmail, testPassword);
 
+        page.waitForTimeout(7000);
+
         cartPage.clickSaveForLater(); 
 
         cartPage.validateEmptyCartAndSavedMessage();
         cartPage.validateProductInSavedForLater(PRODUCT_NAME);
 
         cartPage.clickMoveToCart();
-        cartPage.validateProductInCart(PRODUCT_NAME);
+        page.waitForTimeout(7000);
+        cartPage.validateProductAddedToCart(PRODUCT_NAME);
     }
 }
