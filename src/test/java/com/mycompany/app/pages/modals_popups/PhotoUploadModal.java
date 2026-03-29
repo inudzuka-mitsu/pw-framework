@@ -19,9 +19,7 @@ public class PhotoUploadModal extends BasePage {
     private final String photoNameDisplay = ".select-photo-name";
 
     private final String uploadVideoBtn = "#uploadVideoBtn";
-    private final String videoInput = "#uploadVideoInput";
     private final String addVideoToProductBtn = "#submitUploadVideo";
-    private final String videoPreviewBlock = ".video-preview-block";
 
 
     public PhotoUploadModal(Page page) {
