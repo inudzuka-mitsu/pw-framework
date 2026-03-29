@@ -27,6 +27,7 @@ public class PostOrderActionsTests extends TestBase {
     private CartPage cartPage;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setupAndNavigateToOrderDetails() {
 
         signInPage = new SignInPage(page);
