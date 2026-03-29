@@ -1,6 +1,6 @@
 package com.mycompany.app.pages;
 
-import java.nio.file.Paths; // <--- NEW IMPORT REQUIRED
+import java.nio.file.Paths;
 
 import com.microsoft.playwright.FileChooser;
 import com.microsoft.playwright.FrameLocator;
@@ -20,7 +20,6 @@ public class PhotoEditorPage extends BasePage {
     private final String photoTab = "//button[contains(text(), 'Photos')]"; 
     private final String addPhotoLaterBtn = "text=Add Photos Later";
     private final String libraryPhotoSource = ".LibraryPhotosList .PhotoPreview";
-    private final String continueBtn = "button:has-text('Continue')";
     
     private final String productPhotoSlot = ".PhotoSlot";
 

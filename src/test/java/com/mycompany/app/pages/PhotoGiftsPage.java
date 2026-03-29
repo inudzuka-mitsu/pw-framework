@@ -5,13 +5,13 @@ import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.microsoft.playwright.FileChooser;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class PhotoGiftsPage extends BasePage {
 
-    private final String fileInput = "input.gtm-card-thumb#photoFirstFileUploader";
     private final String productImages = ".PhotoFirst_product img";
 
     private final String productCard = ".PhotoFirst_product";
@@ -36,12 +36,17 @@ public class PhotoGiftsPage extends BasePage {
         product.locator("a.pmallIFrameModalTrigger").click();
     }
 
-    public void uploadInspirationPhoto(String absoluteFilePath) {
+   public void uploadInspirationPhoto(String absoluteFilePath) {
         System.out.println("Uploading photo to Photo First uploader: " + absoluteFilePath);
         
-        Locator uploadInput = page.locator(fileInput);
-        uploadInput.setInputFiles(Paths.get(absoluteFilePath));
-        uploadInput.evaluate("el => el.dispatchEvent(new Event('change', { bubbles: true }))");
+        Locator uploadLabel = page.locator("label[for='photoFirstFileUploader']")
+                                  .filter(new Locator.FilterOptions().setHasText("Upload"));
+                                  
+        FileChooser fileChooser = page.waitForFileChooser(() -> {
+            uploadLabel.first().click(); 
+        });
+
+        fileChooser.setFiles(Paths.get(absoluteFilePath));
     }
 
     public void waitForProcessing() {
