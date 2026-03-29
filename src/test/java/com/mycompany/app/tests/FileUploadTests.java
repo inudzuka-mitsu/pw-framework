@@ -7,17 +7,13 @@ import com.mycompany.app.base.TestBase;
 import com.mycompany.app.pages.CartPage;
 import com.mycompany.app.pages.HomePage;
 import com.mycompany.app.pages.PhotoGiftsPage;
-import com.mycompany.app.pages.ProductPage;
 import com.mycompany.app.pages.login.StagingLoginPage;
 import com.mycompany.app.pages.modals_popups.PersonalizeItemModal;
-import com.mycompany.app.pages.modals_popups.PhotoUploadModal;
 
 
 public class FileUploadTests extends TestBase {
 
     private StagingLoginPage stagingLoginPage;
-    private ProductPage productPage;
-    private PhotoUploadModal photoUploadModal;
     private PersonalizeItemModal personalizeModal;
     private CartPage cartPage;
     private HomePage homePage;
@@ -28,7 +24,6 @@ public class FileUploadTests extends TestBase {
     void uploadPhotoGift() {
 
         stagingLoginPage = new StagingLoginPage(page);
-        photoUploadModal = new PhotoUploadModal(page);
         personalizeModal = new PersonalizeItemModal(page);
         cartPage = new CartPage(page);
         homePage = new HomePage(page);
