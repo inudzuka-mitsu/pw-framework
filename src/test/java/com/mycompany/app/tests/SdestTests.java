@@ -28,7 +28,9 @@ public class SdestTests extends TestBase {
         forHerPage = new ForHerPage(page);
         pcp = new ProductCatalogPage(page);
 
-        page.navigate(getProperty("stagingBaseUrl"));
+        page.navigate(getProperty("stagingBaseUrl"), new com.microsoft.playwright.Page.NavigateOptions()
+            .setWaitUntil(com.microsoft.playwright.options.WaitUntilState.DOMCONTENTLOADED));
+        
         stagingLoginPage.closePopUp();
     }
 

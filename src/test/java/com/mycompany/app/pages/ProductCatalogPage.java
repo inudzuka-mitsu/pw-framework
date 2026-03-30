@@ -50,7 +50,7 @@ public class ProductCatalogPage extends BasePage {
     }
 
     public void clickFirstProduct() {
-    Locator firstProduct = page.locator(productLink).first();
+    Locator firstProduct = page.locator(productLink).nth(1);
     
     firstProduct.hover();
     page.waitForTimeout(500);
