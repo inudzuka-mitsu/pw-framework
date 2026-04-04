@@ -10,6 +10,8 @@ import com.mycompany.app.pages.CelebrationsPassportPage;
 import com.mycompany.app.pages.login.StagingLoginPage;
 import com.mycompany.app.pages.modals_popups.Footer;
 
+// This test is configured for desktop app, iPhone 13 Pro Max, Samsung Galaxy A52
+
 public class PassportTests extends TestBase {
 
     private CartPage cartPage;
@@ -21,8 +23,8 @@ public class PassportTests extends TestBase {
     @Tag("smoke")
     void celebrationsPassport() throws InterruptedException {
 
-        footer = new Footer(page);
-        cartPage = new CartPage(page);
+        footer = new Footer(page, isMobile());
+        cartPage = new CartPage(page, isMobile());
         stagingLoginPage = new StagingLoginPage(page);
         passportPage = new CelebrationsPassportPage(page);
 

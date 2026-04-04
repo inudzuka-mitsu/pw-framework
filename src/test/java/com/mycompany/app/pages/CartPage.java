@@ -10,8 +10,11 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 
 public class CartPage extends BasePage {
 
-    public CartPage(Page page) {
+    private final boolean isMobile;
+
+    public CartPage(Page page, boolean isMobile) {
         super(page);
+        this.isMobile = isMobile;
     }
 
     private final String quantityInput = "input.inp__qty-title";
@@ -153,7 +156,8 @@ public class CartPage extends BasePage {
     }
 
     public void validateProductInCart(String productName) {
-        Locator cartItemTitle = page.locator(".block__shopping-cart h3 a")
+        String locator = isMobile ? "div.block__cart-item h3" : ".block__shopping-cart h3 a";
+        Locator cartItemTitle = page.locator(locator)
                                     .filter(new Locator.FilterOptions().setHasText(productName)).first();
         assertThat(cartItemTitle).isVisible(
             new LocatorAssertions.IsVisibleOptions().setTimeout(30000)

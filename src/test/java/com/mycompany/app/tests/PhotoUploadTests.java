@@ -24,7 +24,7 @@ public class PhotoUploadTests extends TestBase {
         productPage = new ProductPage(page);
         photoEditorPage = new PhotoEditorPage(page);
         homePage = new HomePage(page, isMobile());
-        cartPage = new CartPage(page);
+        cartPage = new CartPage(page, isMobile());
 
         String PRODUCT_URL = getProperty("baseUrl") + "/Family-Photo-Personalized-Coffee-Mugs-p25561.prod?sdest=dept&sdestid=2115&storeid=34&categoryid=2115";
         String photoPath = System.getProperty("user.dir") + "/src/test/resources/lake.jpg";

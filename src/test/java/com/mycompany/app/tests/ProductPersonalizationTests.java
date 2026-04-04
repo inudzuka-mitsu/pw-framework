@@ -44,7 +44,7 @@ public class ProductPersonalizationTests extends TestBase {
         personalizeModal = new PersonalizeItemModal(page);
         giftBoxModal = new CustomizeGiftModal(page);
         homePage = new HomePage(page, isMobile());
-        cartPage = new CartPage(page);
+        cartPage = new CartPage(page, isMobile());
         shippingPage = new AddressModal(page);
         checkoutPage = new CheckoutPage(page);
         confirmationPage = new OrderConfirmationPage(page);
@@ -97,7 +97,7 @@ public class ProductPersonalizationTests extends TestBase {
         personalizeModal = new PersonalizeItemModal(page);
         giftBoxModal = new CustomizeGiftModal(page);
         homePage = new HomePage(page, isMobile());
-        cartPage = new CartPage(page);
+        cartPage = new CartPage(page, isMobile());
         shippingPage = new AddressModal(page);
         checkoutPage = new CheckoutPage(page);
         confirmationPage = new OrderConfirmationPage(page);

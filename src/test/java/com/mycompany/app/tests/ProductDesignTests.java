@@ -137,7 +137,7 @@ public class ProductDesignTests extends TestBase {
         productPage = new ProductPage(page);
         personalizeModal = new PersonalizeItemModal(page);
         homePage = new HomePage(page, isMobile());
-        cartPage = new CartPage(page);
+        cartPage = new CartPage(page, isMobile());
 
         page.navigate(getProperty("stagingBaseUrl"));
         stagingLoginPage.closePopUp();

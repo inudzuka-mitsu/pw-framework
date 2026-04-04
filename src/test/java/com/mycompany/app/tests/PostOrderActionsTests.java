@@ -36,7 +36,7 @@ public class PostOrderActionsTests extends TestBase {
         accountPage = new AccountPage(page);
         orderHistoryPage = new OrderHistoryPage(page);
         homePage = new HomePage(page, isMobile());
-        cartPage = new CartPage(page);
+        cartPage = new CartPage(page, isMobile());
 
         String testEmail = getProperty("test_email_2");
         String testPassword = getProperty("test_password_2");

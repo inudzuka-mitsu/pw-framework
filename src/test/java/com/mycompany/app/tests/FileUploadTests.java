@@ -25,7 +25,7 @@ public class FileUploadTests extends TestBase {
 
         stagingLoginPage = new StagingLoginPage(page);
         personalizeModal = new PersonalizeItemModal(page);
-        cartPage = new CartPage(page);
+        cartPage = new CartPage(page, isMobile());
         homePage = new HomePage(page, isMobile());
         photoGiftsPage = new PhotoGiftsPage(page);
 
