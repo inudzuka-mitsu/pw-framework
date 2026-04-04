@@ -26,6 +26,7 @@ public class HomePage extends BasePage {
     // MOBILE APP LOCATORS
 
     private final String mobileSearchBar = "input.search-input.ui-autocomplete-input";
+    private final String mobileForHerLink = "a[aria-label='for her']";
 
     public void typeProduct(String productName) {
        String locator = isMobile ? mobileSearchBar : searchBar;
@@ -34,7 +35,8 @@ public class HomePage extends BasePage {
     }
 
     public void clickForHer() {
-        page.locator(forHerNavLink).click();
+        String locator = isMobile ? mobileForHerLink : forHerNavLink;
+        page.locator(locator).click();
     }
 
     public void searchProduct() {

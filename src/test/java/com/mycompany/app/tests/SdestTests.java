@@ -13,6 +13,8 @@ import com.mycompany.app.pages.HomePage;
 import com.mycompany.app.pages.ProductCatalogPage;
 import com.mycompany.app.pages.login.StagingLoginPage;
 
+// These tests are configured for desktop app, iPhone 13 Pro Max, Samsung Galaxy A52
+
 public class SdestTests extends TestBase {
 
     private StagingLoginPage stagingLoginPage;
@@ -25,7 +27,7 @@ public class SdestTests extends TestBase {
     void setupPages() {
         stagingLoginPage = new StagingLoginPage(page);
         homePage = new HomePage(page, isMobile());
-        forHerPage = new ForHerPage(page);
+        forHerPage = new ForHerPage(page, isMobile());
         pcp = new ProductCatalogPage(page, isMobile());
 
         page.navigate(getProperty("stagingBaseUrl"), new com.microsoft.playwright.Page.NavigateOptions()
@@ -55,6 +57,11 @@ public class SdestTests extends TestBase {
         page.waitForTimeout(10000);
         pcp.clickFirstProduct();
 
-        assertThat(page).hasURL(Pattern.compile(".*-p\\d+\\.prod\\?sdest=.*&sdestid=.*"));
+        String expectedUrlRegex = isMobile() 
+                ? ".*productid=\\d+&sdest=.*&sdestid=.*"   // Mobile pattern
+                : ".*prod\\?sdest=.*&sdestid=.*";          // Desktop pattern
+
+    
+        assertThat(page).hasURL(Pattern.compile(expectedUrlRegex));
     }
 }

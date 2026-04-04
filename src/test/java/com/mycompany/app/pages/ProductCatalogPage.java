@@ -67,11 +67,15 @@ public class ProductCatalogPage extends BasePage {
     }
 
     public void clickFirstProduct() {
-       Locator firstProduct = page.locator(productLink).nth(1);
-    
-       firstProduct.hover();
-       page.waitForTimeout(500);
-   
-       firstProduct.click();
+        String activeProductLink = isMobile ? mobileItemImage : productLink;
+        
+        Locator firstProduct = page.locator(activeProductLink).first();
+        
+        if (!isMobile) {
+            firstProduct.hover();
+            page.waitForTimeout(500);
+        }
+       
+        firstProduct.click();
     }
 }
