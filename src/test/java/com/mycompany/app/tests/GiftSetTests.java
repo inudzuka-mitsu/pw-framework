@@ -34,7 +34,7 @@ public class GiftSetTests extends TestBase {
         stagingLoginPage = new StagingLoginPage(page);
         productPage = new ProductPage(page);
         personalizeModal = new PersonalizeItemModal(page);
-        homePage = new HomePage(page);
+        homePage = new HomePage(page, isMobile());
         cartPage = new CartPage(page);
         signInPage = new SignInPage(page);
     }

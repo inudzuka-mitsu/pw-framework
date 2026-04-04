@@ -8,15 +8,17 @@ import com.mycompany.app.pages.ProductCatalogPage;
 import com.mycompany.app.pages.login.StagingLoginPage;
 import com.mycompany.app.pages.modals_popups.ProductModal;
 
+// This test is configured for desktop app, iPhone 13 Pro Max, Samsung Galaxy A52
+
 public class ProductSearchTests extends TestBase {
 
      @Test
      void searchForProduct() {
 
         StagingLoginPage lp = new StagingLoginPage(page);
-        HomePage hp = new HomePage(page);
+        HomePage hp = new HomePage(page, isMobile());
         ProductModal modal = new ProductModal(page);
-        ProductCatalogPage pc = new ProductCatalogPage(page);
+        ProductCatalogPage pc = new ProductCatalogPage(page, isMobile());
 
         String productName = "Socks";
 
@@ -29,7 +31,9 @@ public class ProductSearchTests extends TestBase {
         modal.validateAllProductSuggestionsContainProductName(productName);
 
         hp.searchProduct();
-        pc.validateCurrentSelection(productName);
+        if (!isMobile()) {
+         pc.validateCurrentSelection(productName);
+        }
         pc.validateItemSearchResults(productName);
      }
  }

@@ -133,4 +133,9 @@ public class TestBase {
         String systemProp = System.getProperty(key);
         return (systemProp != null) ? systemProp : props.getProperty(key);
     }
+
+    public boolean isMobile() {
+        String deviceName = getProperty("device.name");
+        return deviceName != null && !deviceName.trim().isEmpty();
+    }
 }

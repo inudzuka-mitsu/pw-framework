@@ -5,10 +5,15 @@ import com.microsoft.playwright.Page;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class HomePage extends BasePage {
+
+    private final boolean isMobile;
     
-    public HomePage(Page page) {
+    public HomePage(Page page, boolean isMobile) {
         super(page); 
+        this.isMobile = isMobile;
     }
+
+    // DESKTOP APP LOCATORS
 
     private final String searchBar = "#searchBox";
     private final String viewCartButton = ".block__added-to-cart a[href*='Cart.aspx']";
@@ -18,9 +23,14 @@ public class HomePage extends BasePage {
 
     private final String forHerNavLink = ".nav-list > .nav-item > a:text-is('For Her')";
 
+    // MOBILE APP LOCATORS
+
+    private final String mobileSearchBar = "input.search-input.ui-autocomplete-input";
+
     public void typeProduct(String productName) {
-       page.locator(searchBar).click();
-       page.locator(searchBar).fill(productName);
+       String locator = isMobile ? mobileSearchBar : searchBar;
+       page.locator(locator).click();
+       page.locator(locator).fill(productName);
     }
 
     public void clickForHer() {
@@ -28,7 +38,8 @@ public class HomePage extends BasePage {
     }
 
     public void searchProduct() {
-        page.locator(searchBar).press("Enter");
+        String locator = isMobile ? mobileSearchBar : searchBar;
+        page.locator(locator).press("Enter");
     }
 
     public void clickViewCart() {

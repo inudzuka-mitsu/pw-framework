@@ -26,7 +26,7 @@ public class FileUploadTests extends TestBase {
         stagingLoginPage = new StagingLoginPage(page);
         personalizeModal = new PersonalizeItemModal(page);
         cartPage = new CartPage(page);
-        homePage = new HomePage(page);
+        homePage = new HomePage(page, isMobile());
         photoGiftsPage = new PhotoGiftsPage(page);
 
         String PRODUCT_URL = getProperty("baseUrl") + "/Personalized-Photo-Gifts-s34.store";

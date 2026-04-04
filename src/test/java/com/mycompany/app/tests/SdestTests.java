@@ -24,9 +24,9 @@ public class SdestTests extends TestBase {
     @SuppressWarnings("unused")
     void setupPages() {
         stagingLoginPage = new StagingLoginPage(page);
-        homePage = new HomePage(page);
+        homePage = new HomePage(page, isMobile());
         forHerPage = new ForHerPage(page);
-        pcp = new ProductCatalogPage(page);
+        pcp = new ProductCatalogPage(page, isMobile());
 
         page.navigate(getProperty("stagingBaseUrl"), new com.microsoft.playwright.Page.NavigateOptions()
             .setWaitUntil(com.microsoft.playwright.options.WaitUntilState.DOMCONTENTLOADED));

@@ -52,7 +52,7 @@ public class ProductDesignTests extends TestBase {
         designToolPage = new DesignToolPage(page);
         editorPage = new EditorPage(page);
         popup = new DesignPopup(page);
-        homePage = new HomePage(page);
+        homePage = new HomePage(page, isMobile());
         signInPage = new SignInPage(page);
         shippingPage = new AddressModal(page);
         checkoutPage = new CheckoutPage(page);
@@ -94,7 +94,7 @@ public class ProductDesignTests extends TestBase {
         designToolPage = new DesignToolPage(page);
         editorPage = new EditorPage(page);
         popup = new DesignPopup(page);
-        homePage = new HomePage(page);
+        homePage = new HomePage(page, isMobile());
         signInPage = new SignInPage(page);
         shippingPage = new AddressModal(page);
         checkoutPage = new CheckoutPage(page);
@@ -136,7 +136,7 @@ public class ProductDesignTests extends TestBase {
         stagingLoginPage = new StagingLoginPage(page);
         productPage = new ProductPage(page);
         personalizeModal = new PersonalizeItemModal(page);
-        homePage = new HomePage(page);
+        homePage = new HomePage(page, isMobile());
         cartPage = new CartPage(page);
 
         page.navigate(getProperty("stagingBaseUrl"));
