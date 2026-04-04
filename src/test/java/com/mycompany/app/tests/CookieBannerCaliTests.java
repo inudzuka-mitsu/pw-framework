@@ -4,25 +4,22 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.APIResponse;
-import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Route;
 import com.microsoft.playwright.assertions.LocatorAssertions;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import com.mycompany.app.base.TestBase;
 import com.mycompany.app.pages.login.StagingLoginPage;
 
+// This test is configured for desktop app, iPhone 13 Pro Max, Samsung Galaxy A52
+
 public class CookieBannerCaliTests extends TestBase {
 
     @Test
     @DisplayName("Validate users in California can see a cookie banner upon navigation to the website")
-    @SuppressWarnings("ConvertToTryWithResources")
     public void testCaliforniaCookieBanner() {
-        BrowserContext caContext = browser.newContext();
-        Page caPage = caContext.newPage();
-
-        caPage.route("**/notice?**", route -> {
+        
+        page.route("**/notice?**", route -> {
             System.out.println("⚡️ Intercepted TrustArc Notice Request!");
             
             APIResponse response = route.fetch();
@@ -50,19 +47,17 @@ public class CookieBannerCaliTests extends TestBase {
             );
         });
 
-        caPage.navigate(getProperty("stagingBaseUrl"));
+        page.navigate(getProperty("stagingBaseUrl"));
 
-        StagingLoginPage caLoginPage = new StagingLoginPage(caPage);
-        caLoginPage.closePopUp();
+        StagingLoginPage loginPage = new StagingLoginPage(page);
+        loginPage.closePopUp();
 
-        Locator cookieHeader = caPage.frameLocator("iframe[name='trustarc_cm']")
+        Locator cookieHeader = page.frameLocator("iframe[name='trustarc_cm']")
                                  .locator(".mainHeader.consentHeader h1");
     
         assertThat(cookieHeader).isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(10000));
         assertThat(cookieHeader).containsText("Cookies and Related Technologies on This Site");
 
         System.out.println("✅ Cookie Banner (inside iframe) validated!");
-        
-        caContext.close();
     }
 }
