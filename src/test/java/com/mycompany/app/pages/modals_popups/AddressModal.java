@@ -7,15 +7,26 @@ import com.mycompany.app.pages.BasePage;
 
 public class AddressModal extends BasePage {
 
-    public AddressModal(Page page) {
+    private final boolean isMobile;
+
+    public AddressModal(Page page, boolean isMobile) {
         super(page);
+        this.isMobile = isMobile;
     }
+
+    // DESKTOP APP LOCATORS
 
     private final String shipToAddressBtn = "#divAddressList input[value='Ship To This Address']";
     private final String saveAndContinueBtn = "input#ctl00_belowHeader_saveContinueBtn";
     private final String addressTextLocator = ".cstAddress";
     private final String addressCardContainer = ".itembox";
     private final String addNewAddressBtn = "#ctl00_belowHeader_viewAddressBookControl_btn_addnewaddress";
+
+    // MOBILE APP LOCATORS
+
+    private final String mobileAddNewAddressBtn = "button#newAddressSubmit";
+    private final String mobileAddressTextLocator = ".adressbook-address";
+    private final String mobileAddressCardContainer = ".box__address-block";
 
     public void selectFirstAddressAndShip() {
         page.locator(shipToAddressBtn).first().click(new Locator.ClickOptions().setForce(true));
@@ -62,8 +73,12 @@ public class AddressModal extends BasePage {
     }
 
     public void editAddress(int index) {
-        Locator firstCard = page.locator(addressCardContainer).nth(index);
-        firstCard.locator("input[value='Edit']").click(new Locator.ClickOptions().setForce(true));
+        String activeCardContainer = isMobile ? mobileAddressCardContainer : addressCardContainer;
+        Locator card = page.locator(activeCardContainer).nth(index);
+        
+        String editBtnLocator = isMobile ? "a:has-text('Edit')" : "input[value='Edit']";
+        
+        card.locator(editBtnLocator).click(new Locator.ClickOptions().setForce(true));
     }
 
     public void clickSaveAndContinue() {
@@ -71,13 +86,17 @@ public class AddressModal extends BasePage {
     }
 
     public void clickAddNewAddress() {
-        page.locator(addNewAddressBtn).click();
+        String locator = isMobile ? mobileAddNewAddressBtn : addNewAddressBtn;
+        page.locator(locator).click();
     }
 
     public void validateLastAddress(String nickname, String firstName, String lastName, 
                                     String address, String city, String state, String zip, String phone) {
-        Locator lastCard = page.locator(addressCardContainer).last();
-        Locator addressBlock = lastCard.locator(addressTextLocator);
+        String activeCardContainer = isMobile ? mobileAddressCardContainer : addressCardContainer;
+        String activeTextLocator = isMobile ? mobileAddressTextLocator : addressTextLocator;
+
+        Locator lastCard = page.locator(activeCardContainer).last();
+        Locator addressBlock = lastCard.locator(activeTextLocator);
         
         assertThat(addressBlock).containsText(nickname);
         assertThat(addressBlock).containsText(firstName + " " + lastName);
@@ -90,8 +109,11 @@ public class AddressModal extends BasePage {
 
     public void validateAddress(int index, String nickname, String firstName, String lastName, 
                                     String address, String city, String state, String zip, String phone) {
-        Locator lastCard = page.locator(addressCardContainer).nth(index);
-        Locator addressBlock = lastCard.locator(addressTextLocator);
+        String activeCardContainer = isMobile ? mobileAddressCardContainer : addressCardContainer;
+        String activeTextLocator = isMobile ? mobileAddressTextLocator : addressTextLocator;
+
+        Locator card = page.locator(activeCardContainer).nth(index);
+        Locator addressBlock = card.locator(activeTextLocator);
         
         assertThat(addressBlock).containsText(nickname);
         assertThat(addressBlock).containsText(firstName + " " + lastName);

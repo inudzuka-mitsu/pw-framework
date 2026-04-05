@@ -4,18 +4,29 @@ import com.microsoft.playwright.Page;
 
 public class AccountPage extends BasePage {
 
-    public AccountPage(Page page) {
+    private final boolean isMobile;
+
+    public AccountPage(Page page, boolean isMobile) {
         super(page);
+        this.isMobile = isMobile;
     }
+
+    // DESKTOP APP LOCATORS
 
     private final String manageShippingAddressLink = "a:has-text('Manage my shipping address')";
     private final String orderHistoryLink = "a:has-text('Order History')";
 
+    // MOBILE APP LOCATORS
+
+    private final String mobileManageShippingAddressesBtn = ".flex__menu-blocks li:has-text('Manage My Shipping Addresses')";
+
     public void clickManageShippingAddress() {
-        page.locator(manageShippingAddressLink).first().click();
+        String locator = isMobile ? mobileManageShippingAddressesBtn : manageShippingAddressLink;
+        page.locator(locator).first().click();
     }
 
     public void clickOrderHistory() {
-        page.locator(orderHistoryLink).first().click();
+        String locator = isMobile ? "" : orderHistoryLink;
+        page.locator(locator).first().click();
     }
 }

@@ -11,6 +11,8 @@ import com.mycompany.app.pages.AddAddressPage;
 import com.mycompany.app.pages.login.SignInPage;
 import com.mycompany.app.pages.modals_popups.AddressModal;
 
+// These tests are configured for desktop app, iPhone 13 Pro Max, Samsung Galaxy A52
+
 
 public class ShippingAddressTests extends TestBase {
     
@@ -23,9 +25,9 @@ public class ShippingAddressTests extends TestBase {
     @DisplayName("Verify user can add a new shipping address")
     void addShippingAddress() {
         signInPage = new SignInPage(page);
-        addAddressPage = new AddAddressPage(page);
-        shippingPage = new AddressModal(page);
-        accountPage = new AccountPage(page);
+        addAddressPage = new AddAddressPage(page, isMobile());
+        shippingPage = new AddressModal(page, isMobile());
+        accountPage = new AccountPage(page, isMobile());
 
         String testEmail = getProperty("test_email_2");
         String testPassword = getProperty("test_password_2");
@@ -58,6 +60,8 @@ public class ShippingAddressTests extends TestBase {
         );
         addAddressPage.clickAddAddress();
 
+        page.waitForTimeout(5000);
+
         page.navigate(getProperty("baseUrl") + "/AddressBook.aspx");
         shippingPage.validateLastAddress(addressNickname,
             firstName,
@@ -73,9 +77,9 @@ public class ShippingAddressTests extends TestBase {
     @DisplayName("Verify user can edit a shipping address")
     void editShippingAddress() throws InterruptedException {
         signInPage = new SignInPage(page);
-        addAddressPage = new AddAddressPage(page);
-        shippingPage = new AddressModal(page);
-        accountPage = new AccountPage(page);
+        addAddressPage = new AddAddressPage(page, isMobile());
+        shippingPage = new AddressModal(page, isMobile());
+        accountPage = new AccountPage(page, isMobile());
 
         String testEmail = getProperty("test_email_2");
         String testPassword = getProperty("test_password_2");
@@ -112,6 +116,8 @@ public class ShippingAddressTests extends TestBase {
             zipCode
         );
         addAddressPage.clickSaveAddress();
+
+        page.waitForTimeout(5000);
 
         page.navigate(getProperty("baseUrl") + "/AddressBook.aspx");
 

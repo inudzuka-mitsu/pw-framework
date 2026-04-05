@@ -1,13 +1,18 @@
 package com.mycompany.app.pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
 public class AddAddressPage extends BasePage {
 
-    public AddAddressPage(Page page) {
+    private final boolean isMobile;
+
+    public AddAddressPage(Page page, boolean isMobile) {
         super(page);
+        this.isMobile = isMobile;
     }
 
+    // --- DESKTOP LOCATORS ---
     private final String nicknameInput = "#ctl00_belowHeader_viewAddressBookControl_txtName";
     private final String firstNameInput = "#ctl00_belowHeader_viewAddressBookControl_txtFirstName";
     private final String lastNameInput = "#ctl00_belowHeader_viewAddressBookControl_txtLastName";
@@ -18,40 +23,72 @@ public class AddAddressPage extends BasePage {
     private final String zipInput = "#ctl00_belowHeader_viewAddressBookControl_txtZip";
     private final String addAddressBtn = "#cmdAddAddress";
     private final String saveAddress = "#cmdSaveAddress";
+    
+    // --- MOBILE LOCATORS  ---
+    private final String mobileIframe = "iframe.dialog__iframe";
+    
+    private final String mNicknameInput = "#CustomerTempAddress_Nickname"; 
+    private final String mFirstNameInput = "#CustomerTempAddress_CustomerFirstName";
+    private final String mLastNameInput = "#CustomerTempAddress_CustomerLastName";
+    private final String mPhoneInput = "#CustomerTempAddress_CustomerPhone";
+    private final String mAddressInput = "#CustomerTempAddress_CustomerAddress1";
+    private final String mCityInput = "#CustomerTempAddress_CustomerCity";
+    private final String mStateDropdown = "#CustomerTempAddress_CustomerState";
+    private final String mZipInput = "#CustomerTempAddress_CustomerZip";
+    private final String mSaveAddress = ".wrapper__btn-bottom input[value*='Save']";
 
-    private final String confirmCheckbox = "input#checkConfirm";
-    private final String useThisAddressBtn = "input#cmdUseThisAddress";
+    private Locator getDynamicLocator(String desktopSelector, String mobileSelector) {
+        if (isMobile) {
+            return page.frameLocator(mobileIframe).locator(mobileSelector);
+        } else {
+            return page.locator(desktopSelector);
+        }
+    }
 
     public void clickAddAddress() {
-        page.locator(addAddressBtn).click();
+        Locator submitBtn = getDynamicLocator(addAddressBtn, mSaveAddress);
+        
+        submitBtn.scrollIntoViewIfNeeded();
+        submitBtn.click(new Locator.ClickOptions().setForce(true));
     }
 
     public void clickSaveAddress() {
-        page.locator(saveAddress).click();
+       Locator saveBtn = getDynamicLocator(saveAddress, mSaveAddress);
+       saveBtn.scrollIntoViewIfNeeded();
+       saveBtn.click(new Locator.ClickOptions().setForce(true));
     }
 
     public void fillNewAddressFormAndSubmit(String nickname, String fName, String lName, String phone, String address, String city, String stateCode, String zip) {
-        page.locator(nicknameInput).clear();
-        page.locator(nicknameInput).fill(nickname);
-        page.locator(firstNameInput).clear();
-        page.locator(firstNameInput).fill(fName);
-        page.locator(lastNameInput).clear();
-        page.locator(lastNameInput).fill(lName);
-        page.locator(phoneInput).clear();
-        page.locator(phoneInput).fill(phone);
-        page.locator(addressInput).clear();
-        page.locator(addressInput).fill(address);
-        page.locator(cityInput).clear();
-        page.locator(cityInput).fill(city);
-
-        page.locator(stateDropdown).selectOption(stateCode);
         
-        page.locator(zipInput).clear();
-        page.locator(zipInput).fill(zip);
-    }
+        Locator nicknameLoc = getDynamicLocator(nicknameInput, mNicknameInput);
+        nicknameLoc.clear();
+        nicknameLoc.fill(nickname);
 
-    public void confirmVerifiedAddress() {
-        page.locator(confirmCheckbox).check(new com.microsoft.playwright.Locator.CheckOptions().setForce(true));
-        page.locator(useThisAddressBtn).click();
+        Locator fNameLoc = getDynamicLocator(firstNameInput, mFirstNameInput);
+        fNameLoc.clear();
+        fNameLoc.fill(fName);
+
+        Locator lNameLoc = getDynamicLocator(lastNameInput, mLastNameInput);
+        lNameLoc.clear();
+        lNameLoc.fill(lName);
+
+        Locator phoneLoc = getDynamicLocator(phoneInput, mPhoneInput);
+        phoneLoc.clear();
+        phoneLoc.fill(phone);
+
+        Locator addressLoc = getDynamicLocator(addressInput, mAddressInput);
+        addressLoc.clear();
+        addressLoc.fill(address);
+
+        Locator cityLoc = getDynamicLocator(cityInput, mCityInput);
+        cityLoc.clear();
+        cityLoc.fill(city);
+
+        Locator stateLoc = getDynamicLocator(stateDropdown, mStateDropdown);
+        stateLoc.selectOption(stateCode);
+        
+        Locator zipLoc = getDynamicLocator(zipInput, mZipInput);
+        zipLoc.clear();
+        zipLoc.fill(zip);
     }
 }

@@ -33,7 +33,7 @@ public class PostOrderActionsTests extends TestBase {
         signInPage = new SignInPage(page);
         stagingLoginPage = new StagingLoginPage(page);
         header = new Header(page);
-        accountPage = new AccountPage(page);
+        accountPage = new AccountPage(page, isMobile());
         orderHistoryPage = new OrderHistoryPage(page);
         homePage = new HomePage(page, isMobile());
         cartPage = new CartPage(page, isMobile());
