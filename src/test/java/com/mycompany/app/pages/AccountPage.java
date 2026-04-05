@@ -19,6 +19,7 @@ public class AccountPage extends BasePage {
     // MOBILE APP LOCATORS
 
     private final String mobileManageShippingAddressesBtn = ".flex__menu-blocks li:has-text('Manage My Shipping Addresses')";
+    private final String mobileOrderHistoryLink = ".flex__menu-blocks li:has-text('Order History')";
 
     public void clickManageShippingAddress() {
         String locator = isMobile ? mobileManageShippingAddressesBtn : manageShippingAddressLink;
@@ -26,7 +27,7 @@ public class AccountPage extends BasePage {
     }
 
     public void clickOrderHistory() {
-        String locator = isMobile ? "" : orderHistoryLink;
+        String locator = isMobile ? mobileOrderHistoryLink : orderHistoryLink;
         page.locator(locator).first().click();
     }
 }

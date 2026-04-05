@@ -4,6 +4,15 @@ import com.microsoft.playwright.Page;
 
 public class OrderHistoryPage extends BasePage {
 
+    private final boolean isMobile;
+
+    public OrderHistoryPage(Page page, boolean isMobile) {
+        super(page);
+        this.isMobile = isMobile;
+    }
+
+    // --- DESKTOP APP LOCATORS ---
+    private final String viewDetailsButton = ".content__wrapper .content-right-col a.base__btn";
     private final String reorderBtn = ".btn_wrapper .reorderItem";
     private final String reportIssueBtn = ".btn_wrapper a:text-is('REPORT ISSUE')";
     private final String writeReviewBtn = ".btn_wrapper a:text-is('WRITE A REVIEW')";
@@ -14,14 +23,18 @@ public class OrderHistoryPage extends BasePage {
     private final String quantityLoc = productContainer + " >> text=Quantity: >> b";
     private final String priceLoc = productContainer + " .sale.info b";
 
-    public OrderHistoryPage(Page page) {
-        super(page);
-    }
-
-    private final String viewDetailsButton = ".content__wrapper .content-right-col a.base__btn";
+    // --- MOBILE APP LOCATORS ---
+    private final String mobileViewDetailsButton = "a.txt__view-details";
+    
+    // Both Name and Number share this same locator on mobile
+    private final String mobileItemNameAndNumber = ".cartProduct_name"; 
+    
+    private final String mobileQuantityLoc = ".divCartInfo li:has-text('Qty:') span";
+    private final String mobilePriceLoc = ".divCartInfo li:has-text('Price:') b";
 
     public void clickViewDetailsOfFirstOrder() {
-        page.locator(viewDetailsButton).first().click();
+        String locator = isMobile ? mobileViewDetailsButton : viewDetailsButton;
+        page.locator(locator).first().click();
     }
 
     public void clickReorder() {
@@ -37,18 +50,32 @@ public class OrderHistoryPage extends BasePage {
     }
 
     public String getItemName() {
-        return page.locator(itemNameLoc).first().innerText();
+        String activeLocator = isMobile ? mobileItemNameAndNumber : itemNameLoc;
+        String rawText = page.locator(activeLocator).first().innerText().trim();
+        
+        if (isMobile && rawText.contains("- Item#:")) {
+            return rawText.split("- Item#:")[0].trim();
+        }
+        return rawText;
     }
 
     public String getItemNumber() {
-        return page.locator(itemNumberLoc).first().innerText();
+        String activeLocator = isMobile ? mobileItemNameAndNumber : itemNumberLoc;
+        String rawText = page.locator(activeLocator).first().innerText().trim();
+        
+        if (isMobile && rawText.contains("- Item#:")) {
+            return rawText.split("- Item#:")[1].trim();
+        }
+        return rawText;
     }
 
     public String getItemQuantity() {
-        return page.locator(quantityLoc).first().innerText();
+        String activeLocator = isMobile ? mobileQuantityLoc : quantityLoc;
+        return page.locator(activeLocator).first().innerText().trim();
     }
 
     public String getItemPrice() {
-        return page.locator(priceLoc).first().innerText();
+        String activeLocator = isMobile ? mobilePriceLoc : priceLoc;
+        return page.locator(activeLocator).first().innerText().trim();
     }
 }

@@ -16,6 +16,8 @@ import com.mycompany.app.pages.login.SignInPage;
 import com.mycompany.app.pages.login.StagingLoginPage;
 import com.mycompany.app.pages.modals_popups.Header;
 
+// These tests are configured for desktop app, iPhone 13 Pro Max, Samsung Galaxy A52
+
 public class PostOrderActionsTests extends TestBase {
 
     private SignInPage signInPage;
@@ -32,9 +34,9 @@ public class PostOrderActionsTests extends TestBase {
 
         signInPage = new SignInPage(page);
         stagingLoginPage = new StagingLoginPage(page);
-        header = new Header(page);
+        header = new Header(page, isMobile());
         accountPage = new AccountPage(page, isMobile());
-        orderHistoryPage = new OrderHistoryPage(page);
+        orderHistoryPage = new OrderHistoryPage(page, isMobile());
         homePage = new HomePage(page, isMobile());
         cartPage = new CartPage(page, isMobile());
 
@@ -70,6 +72,7 @@ public class PostOrderActionsTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Verify 'Re-order Item' button redirects to re-order page")
     void reorderItem() {
 
         String name = orderHistoryPage.getItemName();

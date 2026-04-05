@@ -1,6 +1,8 @@
 package com.mycompany.app.pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.TimeoutError;
 
 public class BasePage {
     
@@ -23,8 +25,13 @@ public class BasePage {
     }
 
     public void closePopUp() {
-        page.frameLocator("#attentive_creative")
-        .locator("#closeIconSvg")
-        .click();
-}
+        try {
+            page.frameLocator("#attentive_creative")
+                .locator("#closeIconSvg")
+                .click(new Locator.ClickOptions().setTimeout(10000));
+            
+        } catch (TimeoutError e) {
+            System.out.println("No popup appeared within 10 seconds. Moving on...");
+        }
+    }
 }
