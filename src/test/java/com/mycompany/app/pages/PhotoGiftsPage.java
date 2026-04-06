@@ -33,7 +33,10 @@ public class PhotoGiftsPage extends BasePage {
         System.out.println("Clicking product containing text: " + partialName);
         assertThat(product).isVisible();
         product.scrollIntoViewIfNeeded();
-        product.locator("a.pmallIFrameModalTrigger").click();
+        
+        Locator productLink = product.locator("a").first();
+        
+        productLink.click(new Locator.ClickOptions().setForce(true));
     }
 
    public void uploadInspirationPhoto(String absoluteFilePath) {

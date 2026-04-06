@@ -13,7 +13,7 @@ import com.mycompany.app.pages.BasePage;
 
 public class PersonalizeItemModal extends BasePage {
 
-    private final String iframeSelector = "#pmallmodaliframe";
+    private final String iframeSelector = "#pmallmodaliframe, #personalizationView";
 
     public PersonalizeItemModal(Page page) {
         super(page);
@@ -25,12 +25,13 @@ public class PersonalizeItemModal extends BasePage {
     private final String fontOptionPattern = "#ul_pers159021 li[data-val='%s']";
     private final String productImage = "#productImage";
     
-    private final String addToCartBtn = "[name='ctl00$mainContent$addToCart$addToCartButton']";
     private final String continueButton = "input#ctl00_mainContent_addToCart_addToCartButton";
-    private final String contBtn = "#cmdAddonGiftBox";
+    private final String contBtn = "input#continueShoppingLink, #cmdAddonGiftBox";
     
     private final String colorDropdownByLabel = "tr:has(.pers-title:has-text('Color')) + tr .dropdown-btn";
     private final String activeDropdownOptions = ".custom-dropdown ul.select-active li[data-val='%s']";
+
+    private final String addToCartBtn = "#addToCartLink, [name='ctl00$mainContent$addToCart$addToCartButton']";
 
     private final String noGiftBoxRadio = "label:has-text('No Gift Box')";
 
@@ -111,7 +112,7 @@ public class PersonalizeItemModal extends BasePage {
         Locator btn = getLocator(addToCartBtn);
         
         btn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        assertThat(btn).isEnabled(); // Ensures async photo processing is totally complete
+        assertThat(btn).isEnabled();
         
         System.out.println(">>> Button is enabled. Clicking Add to Cart...");
         btn.click();
