@@ -49,8 +49,8 @@ public class ProductPersonalizationTests extends TestBase {
         checkoutPage = new CheckoutPage(page);
         confirmationPage = new OrderConfirmationPage(page);
 
-        String testEmail = getProperty("test_email");
-        String testPassword = getProperty("test_password");
+        String testEmail = getProperty("test_email_2");
+        String testPassword = getProperty("test_password_2");
         String couponCode = getProperty("sale_item_coupon_code");
         String cardType = getProperty("card_type");
         String cardName = getProperty("name");
