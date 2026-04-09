@@ -6,15 +6,25 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class ProductPage extends BasePage {
 
-    public ProductPage(Page page) {
+    private final boolean isMobile;
+
+    public ProductPage(Page page, boolean isMobile) {
         super(page); 
+        this.isMobile = isMobile;
     }
+
+    // DESKTOP LOCATORS
 
     private final String personalizeBtn = "button#personalizeBtn";
     private final String handleColorDropdown = "#option-select-container select";
 
+    // MOBILE APP LOCATORS
+
+    private final String mobilePersonalizeBtn = "div_add_to_cart a";
+
     public void clickPersonalizeBtn() {
-        page.locator(personalizeBtn).click();
+        String locator = isMobile ? mobilePersonalizeBtn: personalizeBtn;
+        page.locator(locator).click();
     }
 
     public void clickStartDesigning() {

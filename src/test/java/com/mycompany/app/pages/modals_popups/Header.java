@@ -2,6 +2,7 @@ package com.mycompany.app.pages.modals_popups;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import com.mycompany.app.pages.BasePage;
 
 public class Header extends BasePage {
@@ -22,6 +23,7 @@ public class Header extends BasePage {
     // MOBILE APP LOCATORS
 
     private final String mobileSignInLink = "a.link__sign-in:has-text('Sign In')";
+    private final String signedInNameLabel = "a span.sp__hello-name";
 
     public void clickHamburgerMenu() {
         page.locator(hamburgerMenuIcon).click(new Locator.ClickOptions().setForce(true));
@@ -36,5 +38,11 @@ public class Header extends BasePage {
             }
             page.locator(signInLink).click();
         }
+    }
+
+    public void validateSignedInName(String name) {
+        System.out.println("Validating signed-in name contains: " + name);
+        Locator nameElement = page.locator(signedInNameLabel).last();
+        assertThat(nameElement).containsText(name);
     }
 }

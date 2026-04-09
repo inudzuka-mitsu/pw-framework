@@ -32,7 +32,7 @@ public class PostOrderActionsTests extends TestBase {
     @SuppressWarnings("unused")
     void setupAndNavigateToOrderDetails() {
 
-        signInPage = new SignInPage(page);
+        signInPage = new SignInPage(page, isMobile());
         stagingLoginPage = new StagingLoginPage(page);
         header = new Header(page, isMobile());
         accountPage = new AccountPage(page, isMobile());

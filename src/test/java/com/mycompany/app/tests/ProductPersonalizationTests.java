@@ -39,8 +39,8 @@ public class ProductPersonalizationTests extends TestBase {
    @Test
     void personalizeItem() {
         stagingLoginPage = new StagingLoginPage(page);
-        signInPage = new SignInPage(page);
-        productPage = new ProductPage(page);
+        signInPage = new SignInPage(page, isMobile());
+        productPage = new ProductPage(page, isMobile());
         personalizeModal = new PersonalizeItemModal(page);
         giftBoxModal = new CustomizeGiftModal(page);
         homePage = new HomePage(page, isMobile());
@@ -92,8 +92,8 @@ public class ProductPersonalizationTests extends TestBase {
     @Test
     void editItem() {
         stagingLoginPage = new StagingLoginPage(page);
-        signInPage = new SignInPage(page);
-        productPage = new ProductPage(page);
+        signInPage = new SignInPage(page, isMobile());
+        productPage = new ProductPage(page, isMobile());
         personalizeModal = new PersonalizeItemModal(page);
         giftBoxModal = new CustomizeGiftModal(page);
         homePage = new HomePage(page, isMobile());

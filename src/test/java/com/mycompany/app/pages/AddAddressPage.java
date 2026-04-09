@@ -23,6 +23,8 @@ public class AddAddressPage extends BasePage {
     private final String zipInput = "#ctl00_belowHeader_viewAddressBookControl_txtZip";
     private final String addAddressBtn = "#cmdAddAddress";
     private final String saveAddress = "#cmdSaveAddress";
+    private final String confirmCheckbox = "input#checkConfirm";
+    private final String useThisAddressBtn = "input#cmdUseThisAddress";
     
     // --- MOBILE LOCATORS  ---
     private final String mobileIframe = "iframe.dialog__iframe";
@@ -36,6 +38,8 @@ public class AddAddressPage extends BasePage {
     private final String mStateDropdown = "#CustomerTempAddress_CustomerState";
     private final String mZipInput = "#CustomerTempAddress_CustomerZip";
     private final String mSaveAddress = ".wrapper__btn-bottom input[value*='Save']";
+    private final String mConfirmCheckbox = "#ConfirmAddress";
+    private final String mUseThisAddressBtn = "#confirmAddrSubmit";
 
     private Locator getDynamicLocator(String desktopSelector, String mobileSelector) {
         if (isMobile) {
@@ -56,6 +60,13 @@ public class AddAddressPage extends BasePage {
        Locator saveBtn = getDynamicLocator(saveAddress, mSaveAddress);
        saveBtn.scrollIntoViewIfNeeded();
        saveBtn.click(new Locator.ClickOptions().setForce(true));
+    }
+
+    public void confirmVerifiedAddress() {
+        String locator = isMobile ? mConfirmCheckbox : confirmCheckbox;
+        String locator2 = isMobile ? mUseThisAddressBtn : useThisAddressBtn;
+        page.locator(locator).check(new com.microsoft.playwright.Locator.CheckOptions().setForce(true));
+        page.locator(locator2).click();
     }
 
     public void fillNewAddressFormAndSubmit(String nickname, String fName, String lName, String phone, String address, String city, String stateCode, String zip) {

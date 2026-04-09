@@ -11,6 +11,9 @@ import com.mycompany.app.pages.CheckoutPage;
 import com.mycompany.app.pages.CreateProfilePage;
 import com.mycompany.app.pages.login.SignInPage;
 import com.mycompany.app.pages.modals_popups.AddressModal;
+import com.mycompany.app.pages.modals_popups.Header;
+
+// These tests are configured for desktop app, iPhone 13 Pro Max, Samsung Galaxy A52
 
 public class CreateAccountsTests extends TestBase {
 
@@ -19,16 +22,18 @@ public class CreateAccountsTests extends TestBase {
     private AddAddressPage addAddressPage;
     private AddressModal addressModal;
     private CheckoutPage checkoutPage;
+    private Header header;
 
     @Test
     @DisplayName("Verify user can checkout as a guest")
     void createGuestAccount() {
 
-        signInPage = new SignInPage(page);
-        createProfilePage = new CreateProfilePage(page);
-        addAddressPage = new AddAddressPage(page);
-        addressModal = new AddressModal(page);
+        signInPage = new SignInPage(page, isMobile());
+        createProfilePage = new CreateProfilePage(page, isMobile());
+        addAddressPage = new AddAddressPage(page, isMobile());
+        addressModal = new AddressModal(page, isMobile());
         checkoutPage = new CheckoutPage(page);
+        header = new Header(page, isMobile());
 
         String email = "test_aqa_" + + System.currentTimeMillis() + "@yahoo.com";
         String firstName = "Jane";
@@ -54,26 +59,31 @@ public class CreateAccountsTests extends TestBase {
         signInPage.clickGuestNewAcc();
 
         createProfilePage.fillContactInformation(email, email, true);
+        page.waitForTimeout(3000);
         createProfilePage.fillBillingAddress(firstName, lastName, streetAddress, apt, city, state, zipCode, phoneNumber);
         createProfilePage.validateShippingSameAsBillingIsChecked();
         createProfilePage.clickContinueCheckout();
 
         addAddressPage.confirmVerifiedAddress();
 
-        addressModal.clickSaveAndContinue();
-
-        checkoutPage.validateShippingAddress(expectedAddress);
+        if (!isMobile()) {
+            addressModal.clickSaveAndContinue();
+            checkoutPage.validateShippingAddress(expectedAddress);
+        } else {
+            header.validateSignedInName(firstName);
+        }
     }
 
     @Test
     @DisplayName("Verify user can create a new account")
     void createNewAccount() {
 
-        signInPage = new SignInPage(page);
-        createProfilePage = new CreateProfilePage(page);
-        addAddressPage = new AddAddressPage(page);
-        addressModal = new AddressModal(page);
+        signInPage = new SignInPage(page, isMobile());
+        createProfilePage = new CreateProfilePage(page, isMobile());
+        addAddressPage = new AddAddressPage(page, isMobile());
+        addressModal = new AddressModal(page, isMobile());
         checkoutPage = new CheckoutPage(page);
+        header = new Header(page, isMobile());
 
         String email = "test_aqa2_" + + System.currentTimeMillis() + "@yahoo.com";
         String password = "Pass123!$";
@@ -106,8 +116,11 @@ public class CreateAccountsTests extends TestBase {
 
         addAddressPage.confirmVerifiedAddress();
 
-        addressModal.clickSaveAndContinue();
-
-        checkoutPage.validateShippingAddress(expectedAddress);
+        if (!isMobile()) {
+            addressModal.clickSaveAndContinue();
+            checkoutPage.validateShippingAddress(expectedAddress);
+        } else {
+            header.validateSignedInName(firstName);
+        }
     }
 }

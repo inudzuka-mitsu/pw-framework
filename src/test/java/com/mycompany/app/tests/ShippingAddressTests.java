@@ -24,7 +24,7 @@ public class ShippingAddressTests extends TestBase {
     @Test
     @DisplayName("Verify user can add a new shipping address")
     void addShippingAddress() {
-        signInPage = new SignInPage(page);
+        signInPage = new SignInPage(page, isMobile());
         addAddressPage = new AddAddressPage(page, isMobile());
         shippingPage = new AddressModal(page, isMobile());
         accountPage = new AccountPage(page, isMobile());
@@ -76,7 +76,7 @@ public class ShippingAddressTests extends TestBase {
     @Test
     @DisplayName("Verify user can edit a shipping address")
     void editShippingAddress() throws InterruptedException {
-        signInPage = new SignInPage(page);
+        signInPage = new SignInPage(page, isMobile());
         addAddressPage = new AddAddressPage(page, isMobile());
         shippingPage = new AddressModal(page, isMobile());
         accountPage = new AccountPage(page, isMobile());

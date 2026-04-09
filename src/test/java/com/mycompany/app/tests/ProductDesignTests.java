@@ -48,12 +48,12 @@ public class ProductDesignTests extends TestBase {
         String cardExpYear = getProperty("card_exp_year");
         
         stagingLoginPage = new StagingLoginPage(page);
-        productPage = new ProductPage(page);
+        productPage = new ProductPage(page, isMobile());
         designToolPage = new DesignToolPage(page);
         editorPage = new EditorPage(page);
         popup = new DesignPopup(page);
         homePage = new HomePage(page, isMobile());
-        signInPage = new SignInPage(page);
+        signInPage = new SignInPage(page, isMobile());
         shippingPage = new AddressModal(page, isMobile());
         checkoutPage = new CheckoutPage(page);
         confirmationPage = new OrderConfirmationPage(page);
@@ -90,12 +90,12 @@ public class ProductDesignTests extends TestBase {
         String testPassword = getProperty("test_password_2");
         
         stagingLoginPage = new StagingLoginPage(page);
-        productPage = new ProductPage(page);
+        productPage = new ProductPage(page, isMobile());
         designToolPage = new DesignToolPage(page);
         editorPage = new EditorPage(page);
         popup = new DesignPopup(page);
         homePage = new HomePage(page, isMobile());
-        signInPage = new SignInPage(page);
+        signInPage = new SignInPage(page, isMobile());
         shippingPage = new AddressModal(page, isMobile());
         checkoutPage = new CheckoutPage(page);
         confirmationPage = new OrderConfirmationPage(page);
@@ -134,7 +134,7 @@ public class ProductDesignTests extends TestBase {
 
         designMugPage = new DesignMugPage(page);
         stagingLoginPage = new StagingLoginPage(page);
-        productPage = new ProductPage(page);
+        productPage = new ProductPage(page, isMobile());
         personalizeModal = new PersonalizeItemModal(page);
         homePage = new HomePage(page, isMobile());
         cartPage = new CartPage(page, isMobile());

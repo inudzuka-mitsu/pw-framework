@@ -32,11 +32,11 @@ public class GiftSetTests extends TestBase {
     public void setup() throws IOException {
         super.setup();
         stagingLoginPage = new StagingLoginPage(page);
-        productPage = new ProductPage(page);
+        productPage = new ProductPage(page, isMobile());
         personalizeModal = new PersonalizeItemModal(page);
         homePage = new HomePage(page, isMobile());
         cartPage = new CartPage(page, isMobile());
-        signInPage = new SignInPage(page);
+        signInPage = new SignInPage(page, isMobile());
     }
 
     @Test

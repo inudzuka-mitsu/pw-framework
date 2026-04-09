@@ -21,8 +21,8 @@ public class PhotoUploadTests extends TestBase {
     void photoEditor() {
 
         stagingLoginPage = new StagingLoginPage(page);
-        productPage = new ProductPage(page);
-        photoEditorPage = new PhotoEditorPage(page);
+        productPage = new ProductPage(page, isMobile());
+        photoEditorPage = new PhotoEditorPage(page, isMobile());
         homePage = new HomePage(page, isMobile());
         cartPage = new CartPage(page, isMobile());
 

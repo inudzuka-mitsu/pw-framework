@@ -6,13 +6,22 @@ import com.mycompany.app.pages.BasePage;
 
 public class SignInPage extends BasePage {
 
-    public SignInPage(Page page) {
+    private final boolean isMobile;
+
+    public SignInPage(Page page, boolean isMobile) {
         super(page);
+        this.isMobile = isMobile;
     }
+
+    // DESKTOP APP LOCATORS
 
     private final String emailInput = "input[id*='Email']";
     private final String passwordInput = "input[id*='Password']";
     private final String guestNewAccountBtn = "[name='ctl00$belowHeader$Button2']";
+
+    // MOBILE APP LOCATORS
+
+    private final String mobileGuestNewAccountBtn = "a[href='/CreateProfile.aspx']";
 
     public void enterEmail(String email) {
         page.locator(emailInput).fill(email);
@@ -23,7 +32,8 @@ public class SignInPage extends BasePage {
     }
 
     public void clickGuestNewAcc() {
-        page.locator(guestNewAccountBtn).click();
+        String locator = isMobile ? mobileGuestNewAccountBtn : guestNewAccountBtn;
+        page.locator(locator).click();
     }
 
     public void clickSignIn() {
