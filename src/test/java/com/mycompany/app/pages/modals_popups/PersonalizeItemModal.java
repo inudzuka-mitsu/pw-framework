@@ -19,20 +19,16 @@ public class PersonalizeItemModal extends BasePage {
         super(page);
     }
 
-    private final String threadColorDropdown = "div[data-select='pers159022']";
-    private final String threadColorOptionPattern = "#ul_pers159022 li[data-val='%s']";
-    private final String fontDropdown = "div[data-select='pers159021']";
-    private final String fontOptionPattern = "#ul_pers159021 li[data-val='%s']";
-    private final String productImage = "#productImage";
+    // --- UNIFIED DESKTOP & MOBILE LOCATORS ---
+    private final String threadColorDropdown = "tr:has(.pers-title:has-text('Thread Color')) + tr .dropdown-btn, fieldset:has(.personalization_name:has-text('Thread Color')) .dropdown-btn, div.dropdown-btn";
+    private final String fontDropdown = "tr:has(.pers-title:has-text('Font')) + tr .dropdown-btn, fieldset:has(.personalization_name:has-text('Font')) .dropdown-btn, div.dropdown-btn";
+    private final String colorDropdownByLabel = "tr:has(.pers-title:has-text('Color')) + tr .dropdown-btn, fieldset:has(.personalization_name:has-text('Color')) .dropdown-btn, div.dropdown-btn";
     
+    private final String activeDropdownOptions = ".select-active li[data-val='%s'], .select-active li[data-option='%s']";
+    private final String productImage = "#productImage";
     private final String continueButton = "input#ctl00_mainContent_addToCart_addToCartButton";
     private final String contBtn = "input#continueShoppingLink, #cmdAddonGiftBox";
-    
-    private final String colorDropdownByLabel = "tr:has(.pers-title:has-text('Color')) + tr .dropdown-btn";
-    private final String activeDropdownOptions = ".custom-dropdown ul.select-active li[data-val='%s']";
-
     private final String addToCartBtn = "#addToCartLink, [name='ctl00$mainContent$addToCart$addToCartButton']";
-
     private final String noGiftBoxRadio = "label:has-text('No Gift Box')";
 
     private Locator getLocator(String selector) {
@@ -44,29 +40,48 @@ public class PersonalizeItemModal extends BasePage {
     }
 
     public void fillInputByLabel(String labelText, String value) {
-        String selector = String.format("tr:has(.pers-title:has-text('%s')) + tr input", labelText);
-        Locator input = getLocator(selector);
+        String selector = String.format("tr:has(.pers-title:has-text('%s')) + tr input, input[data-val-required*='%s']", labelText, labelText);
+        
+        Locator input = getLocator(selector).first();
+        input.scrollIntoViewIfNeeded();
         input.clear();
         input.fill(value);
         input.press("Tab");
     }
 
     public void selectThreadColor(String color) {
-        getLocator(threadColorDropdown).click();
-        String optionLocator = String.format(threadColorOptionPattern, color);
-        getLocator(optionLocator).click();
+        Locator dropdown = getLocator(threadColorDropdown).first();
+        dropdown.scrollIntoViewIfNeeded();
+        dropdown.click(new Locator.ClickOptions().setForce(true));
+        
+        String optionLocator = String.format(activeDropdownOptions, color, color);
+        Locator colorOption = getLocator(optionLocator).first();
+        colorOption.scrollIntoViewIfNeeded();
+        colorOption.click(new Locator.ClickOptions().setForce(true));
     }
 
     public void selectFont(String font) {
-        getLocator(fontDropdown).click();
-        String optionLocator = String.format(fontOptionPattern, font);
-        getLocator(optionLocator).click();
+        Locator dropdown = getLocator(fontDropdown).last();
+        dropdown.scrollIntoViewIfNeeded();
+        dropdown.click(new Locator.ClickOptions().setForce(true));
+        
+        String optionLocator = String.format(activeDropdownOptions, font, font);
+        Locator fontOption = getLocator(optionLocator).first();
+    
+        fontOption.scrollIntoViewIfNeeded();
+        fontOption.click(new Locator.ClickOptions().setForce(true));
     }
 
     public void selectColor(String color) {
-        getLocator(colorDropdownByLabel).click();
-        String optionLocator = String.format(activeDropdownOptions, color);
-        getLocator(optionLocator).click();
+        Locator dropdown = getLocator(colorDropdownByLabel).first();
+        dropdown.scrollIntoViewIfNeeded();
+        dropdown.click(new Locator.ClickOptions().setForce(true));
+
+        String optionLocator = String.format(activeDropdownOptions, color, color);
+        Locator colorOption = getLocator(optionLocator).first();
+        
+        colorOption.scrollIntoViewIfNeeded();
+        colorOption.click(new Locator.ClickOptions().setForce(true));
     }
 
     public void selectNoGiftBox() {
@@ -97,7 +112,7 @@ public class PersonalizeItemModal extends BasePage {
         Locator btn = getLocator(continueButton);
         
         btn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        assertThat(btn).isEnabled(); // Ensures async photo processing is totally complete
+        assertThat(btn).isEnabled();
         
         System.out.println(">>> Button is enabled. Clicking Continue...");
         btn.click();

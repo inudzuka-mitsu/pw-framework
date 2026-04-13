@@ -13,22 +13,28 @@ public class ProductPage extends BasePage {
         this.isMobile = isMobile;
     }
 
-    // DESKTOP LOCATORS
+    // --- DESKTOP LOCATORS ---
 
     private final String personalizeBtn = "button#personalizeBtn";
     private final String handleColorDropdown = "#option-select-container select";
 
-    // MOBILE APP LOCATORS
+    // --- MOBILE APP LOCATORS ---
+    
+    private final String mobilePersonalizeBtn = ".div_add_to_cart a";
 
-    private final String mobilePersonalizeBtn = "div_add_to_cart a";
 
     public void clickPersonalizeBtn() {
-        String locator = isMobile ? mobilePersonalizeBtn: personalizeBtn;
-        page.locator(locator).click();
+        String locator = isMobile ? mobilePersonalizeBtn : personalizeBtn;
+        Locator btn = page.locator(locator).first();
+        
+        btn.scrollIntoViewIfNeeded();
+        btn.click(new Locator.ClickOptions().setForce(true));
     }
 
     public void clickStartDesigning() {
-        page.locator(personalizeBtn).click();
+        Locator btn = page.locator(personalizeBtn).first();
+        btn.scrollIntoViewIfNeeded();
+        btn.click(new Locator.ClickOptions().setForce(true));
     }
 
     public void validateDefaultHandleColor(String expectedText) {

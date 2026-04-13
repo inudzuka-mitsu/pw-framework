@@ -7,31 +7,36 @@ import com.microsoft.playwright.options.SelectOption;
 
 public class CreateProfilePage extends BasePage {
 
-    public CreateProfilePage(Page page) {
+    private final boolean isMobile;
+
+    public CreateProfilePage(Page page, boolean isMobile) {
         super(page);
+        this.isMobile = isMobile;
     }
 
-    private final String guestCheckbox = "#id_guest_check";
-    private final String emailInput = "#ctl00_belowHeader_txtEmail";
-    private final String emailConfirmInput = "#ctl00_belowHeader_txtEmail2";
-    private final String passwordInput = "#ctl00_belowHeader_txtPassword";
-    private final String passwordConfirmInput = "#ctl00_belowHeader_txtPassword2";
-
-    private final String billFirstNameInput = "#ctl00_belowHeader_txtBillFirstName";
-    private final String billLastNameInput = "#ctl00_belowHeader_txtBillLastName";
-    private final String billAddress1Input = "#ctl00_belowHeader_txtBillAddress1";
-    private final String billAddress2Input = "#ctl00_belowHeader_txtBillAddress2"; 
-    private final String billCityInput = "#ctl00_belowHeader_txtBillCity";
-    private final String billCountrySelect = "#ctl00_belowHeader_txtBillCountry";
-    private final String billStateSelect = "#ctl00_belowHeader_txtBillState";
-    private final String billZipInput = "#ctl00_belowHeader_txtBillZip";
-    private final String billPhoneInput = "#ctl00_belowHeader_txtBillPhone";
+    // --- COMBINED LOCATORS (Desktop ID, Mobile ID) ---
     
+    private final String guestCheckbox = "#id_guest_check, #IsGuestCheckout";
+    private final String emailInput = "#ctl00_belowHeader_txtEmail, #UserEmail";
+    private final String emailConfirmInput = "#ctl00_belowHeader_txtEmail2, #UserEmail2";
+    private final String passwordInput = "#ctl00_belowHeader_txtPassword, #NewPassword";
+    private final String passwordConfirmInput = "#ctl00_belowHeader_txtPassword2, #Password2";
 
-    private final String shippingSameAsBillingCheckbox = "#ctl00_belowHeader_shipSameAsBill";
+    private final String billFirstNameInput = "#ctl00_belowHeader_txtBillFirstName, #CustomerBillingAddress_CustomerFirstName";
+    private final String billLastNameInput = "#ctl00_belowHeader_txtBillLastName, #CustomerBillingAddress_CustomerLastName";
+    private final String billAddress1Input = "#ctl00_belowHeader_txtBillAddress1, #CustomerBillingAddress_CustomerAddress1";
+    private final String billAddress2Input = "#ctl00_belowHeader_txtBillAddress2, #CustomerBillingAddress_CustomerAddress2"; 
+    private final String billCityInput = "#ctl00_belowHeader_txtBillCity, #CustomerBillingAddress_CustomerCity";
+    private final String billCountrySelect = "#ctl00_belowHeader_txtBillCountry, #CustomerBillingAddress_CustomerCountry2";
+    private final String billStateSelect = "#ctl00_belowHeader_txtBillState, #CustomerBillingAddress_CustomerState";
+    private final String billZipInput = "#ctl00_belowHeader_txtBillZip, #CustomerBillingAddress_CustomerZip";
+    private final String billPhoneInput = "#ctl00_belowHeader_txtBillPhone, #PhoneNumberModel_PhoneNumber";
+    
+    private final String shippingSameAsBillingCheckbox = "#ctl00_belowHeader_shipSameAsBill, #ShippingIsBilling";
 
+    private final String continueButton = "#cmdSubmit, #submitbutton";
 
-    private final String continueButton = "#cmdSubmit";
+    // --- ACTIONS ---
 
     public void fillContactInformation(String email, String password, boolean isGuest) {
         page.locator(emailInput).fill(email);
@@ -42,14 +47,15 @@ public class CreateProfilePage extends BasePage {
         if (isGuest) {
             if (!guestChk.isChecked()) {
                 System.out.println("Selecting 'Guest Checkout'...");
-                guestChk.check();
+                // Force click is helpful for custom-styled checkboxes on mobile
+                guestChk.check(new Locator.CheckOptions().setForce(true));
             }
             assertThat(guestChk).isChecked();
             
         } else {
             if (guestChk.isChecked()) {
                 System.out.println("Unchecking 'Guest Checkout' to enter password...");
-                guestChk.uncheck();
+                guestChk.uncheck(new Locator.UncheckOptions().setForce(true));
             }
             page.locator(passwordInput).waitFor();
             
@@ -58,7 +64,6 @@ public class CreateProfilePage extends BasePage {
         }
     }
 
-    
     public void fillBillingAddress(String firstName, String lastName, String address, String apt, 
                                    String city, String state, String zip, String phone) {
         
@@ -69,13 +74,11 @@ public class CreateProfilePage extends BasePage {
         page.locator(billCityInput).fill(city);
         
         page.selectOption(billCountrySelect, new SelectOption().setValue("US"));
-
         page.selectOption(billStateSelect, new SelectOption().setValue(state));
         
         page.locator(billZipInput).fill(zip);
         page.locator(billPhoneInput).fill(phone);
     }
-
 
     public void validateShippingSameAsBillingIsChecked() {
         Locator checkbox = page.locator(shippingSameAsBillingCheckbox);

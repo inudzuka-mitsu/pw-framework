@@ -17,34 +17,36 @@ public class CartPage extends BasePage {
         this.isMobile = isMobile;
     }
 
-    private final String quantityInput = "input.inp__qty-title";
-    private final String updateButton = "input.btn__qty-update";
-    private final String itemPriceText = ".li__item-price b";
-    private final String boxPriceText = ".li__gift-box span.reg";
-    private final String totalPriceText = ".li__item-total .sp__amt-total";
-    private final String proceedToCheckoutBtn = "a.begin-checkout:has-text('Proceed To Checkout')";
-
-    private final String saveForLaterLink = "ul.list__prev-edit a:has-text('Save for later')";
-    private final String editLink = "ul.list__prev-edit a:has-text('Edit')";
+    // --- DESKTOP AND MOBILE LOCATORS ---
     
+    private final String quantityInput = "input.inp__qty-title";
+    private final String updateButton = "input.btn__qty-update, .updateQtyBT"; 
+    private final String itemPriceText = ".li__item-price b, li:has(label:has-text('Price:')) span.bold";
+    private final String boxPriceText = ".li__gift-box span.reg";
+    private final String totalPriceText = ".li__item-total .sp__amt-total, .li__itm-total .sp__amt-total"; 
+    private final String proceedToCheckoutBtn = "a.begin-checkout:has-text('Proceed To Checkout'), button.begin-checkout:has-text('Proceed To Checkout')";
+    private final String saveForLaterLink = "ul.list__prev-edit a:has-text('Save for later')";
+    private final String editLink = "ul.list__prev-edit a:has-text('Edit'), input.pereditBtn[value='Edit']";
     private final String moveToCartLink = "#ctl00_mainContent_savedItemsList .block__saveto-cart .moveSavedItem";
     private final String savedItemsContainer = "#ctl00_mainContent_savedItemsList";
     private final String emptyCartContainer = "#ctl00_mainContent_cartEmpty";
     private final String savedNotificationText = "#ctl00_mainContent_orderItemsSavedContent2019_notificationsList li";
 
     public double getItemPrice() {
-        return parsePrice(page.locator(itemPriceText).innerText());
+        return parsePrice(page.locator(itemPriceText).first().innerText());
     }
 
     public double getBoxPrice() {
         if (page.locator(boxPriceText).isVisible()) {
-            return parsePrice(page.locator(boxPriceText).innerText());
+            return parsePrice(page.locator(boxPriceText).first().innerText());
         }
         return 0.00;
     }
 
     public void clickProceedToCheckout() {
-        page.locator(proceedToCheckoutBtn).click(new Locator.ClickOptions().setForce(true));
+        Locator btn = page.locator(proceedToCheckoutBtn).first();
+        btn.scrollIntoViewIfNeeded();
+        btn.click(new Locator.ClickOptions().setForce(true));
     }
 
     public void updateQuantityAndVerifyTotal(int newQuantity) {
@@ -60,13 +62,13 @@ public class CartPage extends BasePage {
         System.out.println("New Quantity: " + newQuantity);
         System.out.println("Expected Total: $" + expectedTotalStr);
 
-        page.locator(quantityInput).fill(String.valueOf(newQuantity));
-        page.locator(updateButton).click(new Locator.ClickOptions().setForce(true));
+        page.locator(quantityInput).first().fill(String.valueOf(newQuantity));
+        page.locator(updateButton).first().click(new Locator.ClickOptions().setForce(true));
 
         String safeTotal = expectedTotalStr.replace(".", "\\.");
         Pattern pricePattern = Pattern.compile(".*\\$" + safeTotal + ".*");
         
-        assertThat(page.locator(totalPriceText)).hasText(pricePattern);
+        assertThat(page.locator(totalPriceText).first()).hasText(pricePattern);
     }
 
     private double parsePrice(String priceText) {
@@ -95,18 +97,18 @@ public class CartPage extends BasePage {
     }
 
     public void clickEdit() {
-        Locator saveLink = page.locator(editLink).first();
+        Locator editBtn = page.locator(editLink).first();
 
         try {
-            saveLink.waitFor(new Locator.WaitForOptions()
+            editBtn.waitFor(new Locator.WaitForOptions()
                 .setState(WaitForSelectorState.ATTACHED)
                 .setTimeout(5000));
-            saveLink.scrollIntoViewIfNeeded();
+            editBtn.scrollIntoViewIfNeeded();
             try {
-                saveLink.click(new Locator.ClickOptions().setForce(true).setTimeout(2000));
+                editBtn.click(new Locator.ClickOptions().setForce(true).setTimeout(2000));
             } catch (Exception clickError) {
                 System.out.println("Standard click intercepted by overlay. Attempting JS click...");
-                saveLink.dispatchEvent("click");
+                editBtn.dispatchEvent("click");
             }
 
         } catch (Exception e) {

@@ -14,6 +14,9 @@ import com.mycompany.app.pages.modals_popups.AddressModal;
 import com.mycompany.app.pages.modals_popups.CustomizeGiftModal;
 import com.mycompany.app.pages.modals_popups.PersonalizeItemModal;
 
+
+// These tests are configured for desktop app, iPhone 13 Pro Max, Samsung Galaxy A52
+
 public class ProductPersonalizationTests extends TestBase {
 
     private StagingLoginPage stagingLoginPage;
@@ -42,7 +45,7 @@ public class ProductPersonalizationTests extends TestBase {
         signInPage = new SignInPage(page, isMobile());
         productPage = new ProductPage(page, isMobile());
         personalizeModal = new PersonalizeItemModal(page);
-        giftBoxModal = new CustomizeGiftModal(page);
+        giftBoxModal = new CustomizeGiftModal(page, isMobile());
         homePage = new HomePage(page, isMobile());
         cartPage = new CartPage(page, isMobile());
         shippingPage = new AddressModal(page, isMobile());
@@ -95,7 +98,7 @@ public class ProductPersonalizationTests extends TestBase {
         signInPage = new SignInPage(page, isMobile());
         productPage = new ProductPage(page, isMobile());
         personalizeModal = new PersonalizeItemModal(page);
-        giftBoxModal = new CustomizeGiftModal(page);
+        giftBoxModal = new CustomizeGiftModal(page, isMobile());
         homePage = new HomePage(page, isMobile());
         cartPage = new CartPage(page, isMobile());
         shippingPage = new AddressModal(page, isMobile());
@@ -130,4 +133,4 @@ public class ProductPersonalizationTests extends TestBase {
 
         homePage.validatePersonalization(UPDATED_THREAD_COLOR, null, PERSONALIZATION_TEXT_2);
     }
-}
+ }

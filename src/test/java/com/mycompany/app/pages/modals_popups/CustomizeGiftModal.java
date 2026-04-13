@@ -7,20 +7,34 @@ import com.mycompany.app.pages.BasePage;
 
 public class CustomizeGiftModal extends BasePage {
 
-    private final FrameLocator modalFrame;
+    private final boolean isMobile;
 
-    public CustomizeGiftModal(Page page) {
+    private final FrameLocator modalFrame;
+    private final FrameLocator mobileModalFrame;
+
+    public CustomizeGiftModal(Page page, boolean isMobile) {
         super(page);
         this.modalFrame = page.frameLocator("#pmallmodaliframe");
+        this.mobileModalFrame = page.frameLocator("#personalizationView");
+        this.isMobile = isMobile;
     }
 
     public void selectClassicGiftBox() {
-        modalFrame.getByLabel("Classic gift box")
+        if (!isMobile) {
+            modalFrame.getByLabel("Classic gift box")
                   .check(new Locator.CheckOptions().setForce(true));
+        } else {
+            mobileModalFrame.getByLabel("Classic gift box")
+                  .check(new Locator.CheckOptions().setForce(true));
+        }
+        
     }
 
     public void clickContinue() {
-        modalFrame.getByText("Continue").click();
-    }
-    
+        if (!isMobile) {
+            modalFrame.getByText("Continue").click();
+        } else {
+            mobileModalFrame.getByText("Continue").click();
+        }
+    } 
 }

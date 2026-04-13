@@ -10,11 +10,18 @@ import com.microsoft.playwright.options.SelectOption;
 
 public class PhotoEditorPage extends BasePage {
 
-    public PhotoEditorPage(Page page) {
+    private final boolean isMobile;
+
+    public PhotoEditorPage(Page page, boolean isMobile) {
         super(page);
+        this.isMobile = isMobile;
     }
 
-    private final String editorIframe = "iframe[name='pmallmodaliframe']";
+    // --- COMBINED LOCATORS ---
+    
+    // Looks for the desktop iframe name OR the mobile iframe ID
+    private final String editorIframe = "iframe[name='pmallmodaliframe'], iframe#personalizationView";
+    
     private final String categoryDropdown = "select[name='message-library-category']"; 
     private final String libraryMessageList = ".message-library-content li"; 
     private final String photoTab = "//button[contains(text(), 'Photos')]"; 
@@ -27,6 +34,8 @@ public class PhotoEditorPage extends BasePage {
     private final String addToCartBtn = "#ctl00_mainContent_addToCart_addToCartButton";
 
     private final String addToCartContainer = ".OrderButtonContainer";
+
+    // --- ACTIONS ---
 
     private FrameLocator getEditorFrame() {
         return page.frameLocator(editorIframe);

@@ -9,12 +9,17 @@ public class OrderConfirmationPage extends BasePage {
         super(page); 
     }
 
-    private final String successMessage = "text=Your order has been successfully entered into our system";
-
     public void verifyOrderSuccessMessage() {
-        assertThat(page.locator(successMessage)).isVisible();
-        assertThat(page.locator(successMessage)).containsText(
-            "Your order has been successfully entered into our system. A complete order confirmation will be emailed to you."
+        System.out.println("Validating Order Success Message...");
+        
+        assertThat(page.locator("body")).containsText(
+            "has been successfully entered into our system"
         );
+            
+        assertThat(page.locator("body")).containsText(
+            "A complete order confirmation will be emailed to you"
+        );
+        
+        System.out.println("Order Success Message validated!");
     }
 }
