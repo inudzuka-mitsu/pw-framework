@@ -28,7 +28,7 @@ public class PersonalizeItemModal extends BasePage {
     private final String productImage = "#productImage";
     private final String continueButton = "input#ctl00_mainContent_addToCart_addToCartButton";
     private final String contBtn = "input#continueShoppingLink, #cmdAddonGiftBox";
-    private final String addToCartBtn = "#addToCartLink, [name='ctl00$mainContent$addToCart$addToCartButton']";
+    private final String addToCartBtn = "#addToCartLink, #addToCartButton, [name='ctl00$mainContent$addToCart$addToCartButton']";
     private final String noGiftBoxRadio = "label:has-text('No Gift Box')";
 
     private Locator getLocator(String selector) {
@@ -124,13 +124,16 @@ public class PersonalizeItemModal extends BasePage {
 
     public void clickAddToCart() {
         System.out.println(">>> Waiting for the Add to Cart button to become enabled...");
-        Locator btn = getLocator(addToCartBtn);
+        
+        Locator btn = getLocator(addToCartBtn).first();
         
         btn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         assertThat(btn).isEnabled();
         
         System.out.println(">>> Button is enabled. Clicking Add to Cart...");
-        btn.click();
+        
+        btn.scrollIntoViewIfNeeded();
+        btn.click(new Locator.ClickOptions().setForce(true));
     }
 
     public void fillPersonalizationAndAddToCart(String color, String font, String name) {

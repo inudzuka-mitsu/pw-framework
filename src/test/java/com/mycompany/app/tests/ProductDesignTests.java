@@ -16,6 +16,7 @@ import com.mycompany.app.pages.login.SignInPage;
 import com.mycompany.app.pages.login.StagingLoginPage;
 import com.mycompany.app.pages.modals_popups.AddressModal;
 import com.mycompany.app.pages.modals_popups.DesignPopup;
+import com.mycompany.app.pages.modals_popups.Header;
 import com.mycompany.app.pages.modals_popups.PersonalizeItemModal;
 
 public class ProductDesignTests extends TestBase {
@@ -33,6 +34,7 @@ public class ProductDesignTests extends TestBase {
     private DesignMugPage designMugPage;
     private PersonalizeItemModal personalizeModal;
     private CartPage cartPage;
+    private Header header;
 
     @Test
     @DisplayName("Verify user can design a wedding photo book and complete checkout")
@@ -51,12 +53,13 @@ public class ProductDesignTests extends TestBase {
         productPage = new ProductPage(page, isMobile());
         designToolPage = new DesignToolPage(page);
         editorPage = new EditorPage(page);
-        popup = new DesignPopup(page);
+        popup = new DesignPopup(page, isMobile());
         homePage = new HomePage(page, isMobile());
         signInPage = new SignInPage(page, isMobile());
         shippingPage = new AddressModal(page, isMobile());
         checkoutPage = new CheckoutPage(page);
         confirmationPage = new OrderConfirmationPage(page);
+        header = new Header(page, isMobile());
 
         page.navigate(getProperty("stagingBaseUrl"));
         stagingLoginPage.closePopUp();
@@ -68,6 +71,10 @@ public class ProductDesignTests extends TestBase {
         editorPage.clickAddToCart();
 
         popup.handleValidationPopup();
+        
+        if (isMobile()) {
+            header.clickCartIcon();
+        }
 
         homePage.clickCheckout();
 
@@ -99,6 +106,7 @@ public class ProductDesignTests extends TestBase {
         shippingPage = new AddressModal(page, isMobile());
         checkoutPage = new CheckoutPage(page);
         confirmationPage = new OrderConfirmationPage(page);
+        header = new Header(page, isMobile());
 
         page.navigate(getProperty("stagingBaseUrl"));
         stagingLoginPage.closePopUp();
@@ -110,6 +118,10 @@ public class ProductDesignTests extends TestBase {
         editorPage.clickAddToCart();
 
         popup.handleValidationPopup();
+
+        if (isMobile()) {
+            header.clickCartIcon();
+        }
 
         homePage.clickCheckout();
 
@@ -150,7 +162,7 @@ public class ProductDesignTests extends TestBase {
         designMugPage.clickSkip();
         designMugPage.clickProceed();
 
-        personalizeModal.selectNoGiftBox();
+        if (!isMobile()) { personalizeModal.selectNoGiftBox(); }
         personalizeModal.checkPersonalizationCorrect();
         personalizeModal.clickAddToCart();
 

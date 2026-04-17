@@ -13,26 +13,24 @@ public class ProductPage extends BasePage {
         this.isMobile = isMobile;
     }
 
-    // --- DESKTOP LOCATORS ---
-
-    private final String personalizeBtn = "button#personalizeBtn";
-    private final String handleColorDropdown = "#option-select-container select";
-
-    // --- MOBILE APP LOCATORS ---
+    // --- UNIFIED LOCATORS ---
+    private final String mainActionBtn = "button#personalizeBtn, .div_add_to_cart a";
     
-    private final String mobilePersonalizeBtn = ".div_add_to_cart a";
+    private final String handleColorDropdown = "#option-select-container select";
 
 
     public void clickPersonalizeBtn() {
-        String locator = isMobile ? mobilePersonalizeBtn : personalizeBtn;
-        Locator btn = page.locator(locator).first();
+        System.out.println(">>> Clicking Personalize...");
+        Locator btn = page.locator(mainActionBtn).first();
         
         btn.scrollIntoViewIfNeeded();
         btn.click(new Locator.ClickOptions().setForce(true));
     }
 
     public void clickStartDesigning() {
-        Locator btn = page.locator(personalizeBtn).first();
+        System.out.println(">>> Clicking Start Designing...");
+        Locator btn = page.locator(mainActionBtn).first();
+        
         btn.scrollIntoViewIfNeeded();
         btn.click(new Locator.ClickOptions().setForce(true));
     }

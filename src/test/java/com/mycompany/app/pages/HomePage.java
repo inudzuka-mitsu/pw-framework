@@ -27,7 +27,7 @@ public class HomePage extends BasePage {
     private final String mobileAddedToCartHeader = ".block__top-header h1";
     private final String mobilePersonalizationDetails = ".divItemPerContent";
     private final String mobileViewCartButton = ".divNextBtn input[value='View Cart']";
-    private final String mobileCheckoutBtn = ".divNextBtn input[value='Checkout']";
+    private final String mobileCheckoutBtn = ".divNextBtn input[value='Checkout'], button.begin-checkout";
 
     public void typeProduct(String productName) {
        String locator = isMobile ? mobileSearchBar : searchBar;
@@ -52,7 +52,7 @@ public class HomePage extends BasePage {
 
     public void clickCheckout() {
         String locator = isMobile ? mobileCheckoutBtn : checkoutBtn;
-        page.locator(locator).click(new Locator.ClickOptions().setForce(true));
+        page.locator(locator).first().click(new Locator.ClickOptions().setForce(true));
     }
 
     public void validateAddedToCartVisible() {

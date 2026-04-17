@@ -24,6 +24,7 @@ public class Header extends BasePage {
 
     private final String mobileSignInLink = "a.link__sign-in:has-text('Sign In')";
     private final String signedInNameLabel = "a span.sp__hello-name";
+    private final String mobileCartLink = "a span.sp__icon-cart";
 
     public void clickHamburgerMenu() {
         page.locator(hamburgerMenuIcon).click(new Locator.ClickOptions().setForce(true));
@@ -38,6 +39,10 @@ public class Header extends BasePage {
             }
             page.locator(signInLink).click();
         }
+    }
+
+    public void clickCartIcon() {
+        page.locator(mobileCartLink).click();
     }
 
     public void validateSignedInName(String name) {

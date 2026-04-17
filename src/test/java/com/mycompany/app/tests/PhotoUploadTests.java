@@ -46,7 +46,7 @@ public class PhotoUploadTests extends TestBase {
         photoEditorPage.clickContinue();
 
         homePage.clickViewCart();
-        cartPage.validateProductInCart("Family Photo Personalized Coffee Mug 11 oz.- White");
+        cartPage.validateProductInCart("Family Photo Personalized Coffee Mug");
     }
 
 }

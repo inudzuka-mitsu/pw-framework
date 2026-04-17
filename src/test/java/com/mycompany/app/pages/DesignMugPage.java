@@ -14,7 +14,7 @@ public class DesignMugPage extends BasePage {
     private final String dyoIframeSelector = "#DyoFrame";
     private final String skipButton = "#btnSkip"; 
     private final String gotItButton = "button:has-text('Got It')"; 
-    private final String proceedButton = "#products-settings";
+    private final String proceedButton = "#products-settings, button#addtocart";
 
     public void clickSkip() {
         FrameLocator dyoFrame = page.frameLocator(dyoIframeSelector);
