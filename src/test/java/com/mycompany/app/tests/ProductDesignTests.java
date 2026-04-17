@@ -19,6 +19,8 @@ import com.mycompany.app.pages.modals_popups.DesignPopup;
 import com.mycompany.app.pages.modals_popups.Header;
 import com.mycompany.app.pages.modals_popups.PersonalizeItemModal;
 
+// These tests are configured for desktop app, iPhone 13 Pro Max, Samsung Galaxy A52
+
 public class ProductDesignTests extends TestBase {
 
     private StagingLoginPage stagingLoginPage;
