@@ -9,6 +9,8 @@ import com.mycompany.app.pages.PhotoEditorPage;
 import com.mycompany.app.pages.ProductPage;
 import com.mycompany.app.pages.login.StagingLoginPage;
 
+// This test is configured for desktop app, iPhone 13 Pro Max, Samsung Galaxy A52
+
 public class PhotoUploadTests extends TestBase {
 
     private StagingLoginPage stagingLoginPage;
@@ -42,6 +44,7 @@ public class PhotoUploadTests extends TestBase {
         photoEditorPage.uploadPhoto(photoPath);
         photoEditorPage.clickPhotoTab();
         photoEditorPage.dragPhotoToSlot();
+        photoEditorPage.verifyPhotoAssignedToSlot();
         photoEditorPage.clickAddToCart();
         photoEditorPage.clickContinue();
 

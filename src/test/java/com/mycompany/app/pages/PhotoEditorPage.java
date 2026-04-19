@@ -1,11 +1,13 @@
 package com.mycompany.app.pages;
 
 import java.nio.file.Paths;
+import java.util.regex.Pattern;
 
 import com.microsoft.playwright.FileChooser;
 import com.microsoft.playwright.FrameLocator;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import com.microsoft.playwright.options.SelectOption;
 
 public class PhotoEditorPage extends BasePage {
@@ -19,7 +21,6 @@ public class PhotoEditorPage extends BasePage {
 
     // --- COMBINED LOCATORS ---
     
-    // Looks for the desktop iframe name OR the mobile iframe ID
     private final String editorIframe = "iframe[name='pmallmodaliframe'], iframe#personalizationView";
     
     // Locators that exist on BOTH desktop and mobile
@@ -31,15 +32,14 @@ public class PhotoEditorPage extends BasePage {
     private final String addPhotoLaterBtn = "button:has-text('Add Photos Later')";
     private final String libraryPhotoSource = ".LibraryPhotosList .PhotoPreview";
     private final String productPhotoSlot = ".PhotoSlot";
-    private final String uploadMyDeviceBtn = ".UploadLocalFilesButton"; 
     private final String addToCartContainer = ".OrderButtonContainer";
     private final String desktopAddToCartBtn = "#ctl00_mainContent_addToCart_addToCartButton";
     private final String desktopContinueBtn = "a#cmdAddonGiftBoxV3";
 
     // Mobile-Specific Form Locators
     private final String studioUploadBtn = ".UploadLocalFilesButton, .EmptyBottomLibraryCTAButton";
-    private final String mobileAddToCartBtn = "#addToCartLink, #submitButton";
     private final String mobileSelectPhotoBtn = ".photo-upload-btn, .select_photo_button__pdp-upload";
+    private final String mobileContinueBtn = "input#continueShoppingLink";
 
     // --- ACTIONS ---
 
@@ -93,16 +93,13 @@ public class PhotoEditorPage extends BasePage {
         
         Locator legacyMobileBtn = getEditorFrame().locator(mobileSelectPhotoBtn).first();
         
-        // 1. Check if the product is using the OLD mobile form editor
         if (isMobile && legacyMobileBtn.isVisible()) {
             System.out.println("Detected legacy mobile form. Opening crop iframe...");
             legacyMobileBtn.click(new Locator.ClickOptions().setForce(true));
         } 
-        // 2. Otherwise, we are in the Studio Editor (Desktop OR Mobile)!
         else {
             System.out.println("Detected Studio Editor. Launching file chooser...");
             FileChooser fileChooser = page.waitForFileChooser(() -> {
-                // Using .last() safely bypasses any hidden background elements
                 Locator btn = getEditorFrame().locator(studioUploadBtn).last();
                 btn.scrollIntoViewIfNeeded();
                 btn.click(new Locator.ClickOptions().setForce(true));
@@ -114,18 +111,22 @@ public class PhotoEditorPage extends BasePage {
     }
 
     public void dragPhotoToSlot() {
+        System.out.println("Assigning photo to slot...");
+        Locator loadedPhoto = getEditorFrame().locator(".PhotoPreview.isLoaded").last();
+        loadedPhoto.waitFor();
+
         if (!isMobile) {
-            System.out.println("Dragging photo to slot...");
+            System.out.println("Desktop Flow: Dragging photo to slot...");
             Locator source = getEditorFrame().locator(libraryPhotoSource).last();
             Locator target = getEditorFrame().locator(productPhotoSlot).first();
             
-            // Wait for the image preview to fully load in the sidebar before trying to drag it
-            getEditorFrame().locator(".PhotoPreview.isLoaded").last().waitFor();
-
             source.dragTo(target);
             System.out.println("Photo dragged successfully.");
         } else {
-            System.out.println("Mobile flow: Skipping drag-and-drop (not supported in mobile form view).");
+            System.out.println("Mobile Flow: Tapping photo to assign to selected slot...");
+            loadedPhoto.scrollIntoViewIfNeeded();
+            loadedPhoto.click(new Locator.ClickOptions().setForce(true));
+            System.out.println("Photo assigned successfully.");
         }
     }
 
@@ -133,9 +134,14 @@ public class PhotoEditorPage extends BasePage {
         System.out.println("Clicking 'Add To Cart'...");
 
         if (isMobile) {
-            Locator btn = getEditorFrame().locator(mobileAddToCartBtn).first();
-            btn.scrollIntoViewIfNeeded();
-            btn.click(new Locator.ClickOptions().setForce(true));
+            Locator btn = getEditorFrame().locator("button#addToCartLink, #submitButton").first();
+            
+            System.out.println(">>> Waiting for button to attach to DOM...");
+            btn.waitFor(new Locator.WaitForOptions().setState(com.microsoft.playwright.options.WaitForSelectorState.ATTACHED));
+            
+            System.out.println(">>> Firing JavaScript Native Click...");
+            btn.evaluate("node => node.click()");
+            
         } else {
             getEditorFrame().locator(addToCartContainer + ":not(.isDisabled)").waitFor();
             getEditorFrame().locator(desktopAddToCartBtn).click();
@@ -145,11 +151,37 @@ public class PhotoEditorPage extends BasePage {
     }
     
     public void clickContinue() {
-        if (!isMobile) {
-            System.out.println("Clicking 'Continue'...");
+        System.out.println("Clicking 'Continue'...");
+
+        if (isMobile) {
+            Locator btn = getEditorFrame().locator(mobileContinueBtn).first();
+            
+            System.out.println(">>> Waiting for mobile Continue button to attach...");
+            btn.waitFor(new Locator.WaitForOptions().setState(com.microsoft.playwright.options.WaitForSelectorState.ATTACHED));
+            
+            System.out.println(">>> Firing JavaScript Native Click on Continue...");
+            btn.evaluate("node => node.click()");
+        } else {
             Locator btn = getEditorFrame().locator(desktopContinueBtn).first();
             btn.waitFor();
             btn.click(new Locator.ClickOptions().setForce(true));
         }
+        
+        System.out.println("Continue clicked.");
+    }
+
+    public void verifyPhotoAssignedToSlot() {
+        System.out.println(">>> Verifying photo is rendered in the slot...");
+        
+        Locator slotCanvas = getEditorFrame().locator(".PhotoSlot .PhotoSlotImagePreview").first();
+        slotCanvas.waitFor(new Locator.WaitForOptions().setState(com.microsoft.playwright.options.WaitForSelectorState.ATTACHED).setTimeout(15000));
+        
+        Locator slotOverlay = getEditorFrame().locator(".PhotoSlot .PhotoSlotOverlay").first();
+        assertThat(slotOverlay).not().hasClass(Pattern.compile(".*isEmpty.*"));
+        
+        Locator mainPreviewImage = getEditorFrame().locator(".ProjectPreviewImage").first();
+        assertThat(mainPreviewImage).hasAttribute("src", Pattern.compile(".*\\.jpg.*", Pattern.CASE_INSENSITIVE));
+
+        System.out.println(">>> Photo assignment verified successfully!");
     }
 }
