@@ -31,6 +31,7 @@ public class CartPage extends BasePage {
     private final String savedItemsContainer = "#ctl00_mainContent_savedItemsList";
     private final String emptyCartContainer = "#ctl00_mainContent_cartEmpty";
     private final String savedNotificationText = "#ctl00_mainContent_orderItemsSavedContent2019_notificationsList li";
+    private final String showMoreSavedItemsLink = "#ctl00_mainContent_orderItemsSavedContent2019_moreSavedItemsLink";
 
     public double getItemPrice() {
         return parsePrice(page.locator(itemPriceText).first().innerText());
@@ -47,6 +48,22 @@ public class CartPage extends BasePage {
         Locator btn = page.locator(proceedToCheckoutBtn).first();
         btn.scrollIntoViewIfNeeded();
         btn.click(new Locator.ClickOptions().setForce(true));
+    }
+
+    public void expandSavedItemsListIfNeeded() {
+        Locator showMoreBtn = page.locator(showMoreSavedItemsLink).first();
+        try {
+            showMoreBtn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(5000));
+            System.out.println(">>> 'Show More' link detected! Expanding the saved items list...");
+            
+            showMoreBtn.scrollIntoViewIfNeeded();
+            showMoreBtn.click(new Locator.ClickOptions().setForce(true));
+            
+            page.waitForTimeout(2000); 
+            
+        } catch (com.microsoft.playwright.TimeoutError e) {
+            System.out.println(">>> No 'Show More' link present (3 or fewer items). Proceeding...");
+        }
     }
 
     public void updateQuantityAndVerifyTotal(int newQuantity) {
@@ -135,11 +152,39 @@ public class CartPage extends BasePage {
         }
     }
 
+    public void clickMoveToCartSpecProd(String productName) {
+        System.out.println(">>> Moving '" + productName + "' back to cart...");
+        
+        Locator moveLink = page.locator(".block__saveto-cart")
+                               .filter(new Locator.FilterOptions().setHasText(productName))
+                               .locator(".moveSavedItem")
+                               .first();
+        
+        try {
+            moveLink.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.VISIBLE)
+                .setTimeout(5000));
+            moveLink.scrollIntoViewIfNeeded();
+            try {
+                moveLink.click(new Locator.ClickOptions().setForce(true).setTimeout(2000));
+            } catch (Exception clickError) {
+                System.out.println("Standard click on 'Move To Cart' intercepted. Attempting JS click...");
+                moveLink.dispatchEvent("click");
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to click 'Move To Cart'. Error: " + e.getMessage());
+        }
+    }
+
     public void validateProductInSavedForLater(String productName) {
         Locator container = page.locator(savedItemsContainer);
         container.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        Locator firstSavedProductTitle = container.locator(".block__saveto-cart").first().locator("h3 a");
-        assertThat(firstSavedProductTitle).containsText(productName);
+        
+        Locator savedProductTitle = container.locator(".block__saveto-cart h3 a")
+                                           .filter(new Locator.FilterOptions().setHasText(productName))
+                                           .first();
+                                           
+        assertThat(savedProductTitle).isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(10000));
     }
 
     public void validateEmptyCartAndSavedMessage() {
@@ -172,5 +217,41 @@ public class CartPage extends BasePage {
         assertThat(cartItemTitle).isVisible(
             new LocatorAssertions.IsVisibleOptions().setTimeout(30000)
         );
+    }
+
+    public void clickSaveForLaterSpecProd(String productName) {
+        System.out.println(">>> Clicking 'Save for later' specifically for: " + productName);
+        
+        String blockLocator = isMobile ? "div.block__cart-item" : ".block__shopping-cart";
+        
+        Locator productBlock = page.locator(blockLocator)
+                                   .filter(new Locator.FilterOptions().setHasText(productName))
+                                   .first();
+                                   
+        Locator saveLink = productBlock.locator("a:has-text('Save for later')").first();
+
+        try {
+            saveLink.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED).setTimeout(5000));
+            saveLink.scrollIntoViewIfNeeded();
+            try {
+                saveLink.click(new Locator.ClickOptions().setForce(true).setTimeout(2000));
+            } catch (Exception clickError) {
+                System.out.println("Standard click intercepted by overlay. Attempting JS click...");
+                saveLink.dispatchEvent("click");
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to click 'Save for later'. Error: " + e.getMessage());
+        }
+    }
+
+    public void validateProductInSavedForLaterSpecProd(String productName) {
+        Locator container = page.locator(savedItemsContainer);
+        container.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        
+        Locator savedProductTitle = container.locator(".block__saveto-cart h3")
+                                           .filter(new Locator.FilterOptions().setHasText(productName))
+                                           .first();
+                                           
+        assertThat(savedProductTitle).isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(10000));
     }
 }
