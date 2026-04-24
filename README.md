@@ -53,7 +53,13 @@ mvn clean test -Denv=stg -Dgroups="smoke"
 ### 5. Generate reports
 
 ```bash
-mvn allure:serve
+allure generate target/allure-results --clean --single-file
+```
+
+Open in a browser
+
+```bash
+open allure-report/index.html
 ```
 ### 6. Run mobile tests
 
