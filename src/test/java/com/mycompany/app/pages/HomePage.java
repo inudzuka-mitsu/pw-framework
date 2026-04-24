@@ -69,8 +69,11 @@ public class HomePage extends BasePage {
 
     public void validatePersonalization(String color, String font, String name) {
         String locator = isMobile ? mobilePersonalizationDetails : personalizationDetails;
-        Locator details = page.locator(locator);
+        Locator details = page.locator(locator).first();
         
+        System.out.println(">>> Waiting for personalization details to render...");
+        details.waitFor(new Locator.WaitForOptions().setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE).setTimeout(15000));
+
         if (color != null && !color.isEmpty()) {
             assertThat(details).containsText(color);
         }
