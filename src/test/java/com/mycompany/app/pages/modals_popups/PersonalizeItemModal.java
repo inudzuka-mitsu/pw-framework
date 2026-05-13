@@ -26,7 +26,7 @@ public class PersonalizeItemModal extends BasePage {
     
     private final String activeDropdownOptions = ".select-active li[data-val='%s'], .select-active li[data-option='%s']";
     private final String productImage = "#productImage";
-    private final String continueButton = "input#ctl00_mainContent_addToCart_addToCartButton";
+    private final String continueButton = "input#ctl00_mainContent_addToCart_addToCartButton, button#addToCartLink[value='Continue']";
     private final String contBtn = "input#continueShoppingLink, #cmdAddonGiftBox";
     private final String addToCartBtn = "#addToCartLink, #addToCartButton, [name='ctl00$mainContent$addToCart$addToCartButton']";
     private final String noGiftBoxRadio = "label:has-text('No Gift Box')";
@@ -109,13 +109,16 @@ public class PersonalizeItemModal extends BasePage {
 
     public void clickContinue() {
         System.out.println(">>> Waiting for the Continue button to become enabled...");
-        Locator btn = getLocator(continueButton);
+        
+        Locator btn = getLocator(continueButton).first();
         
         btn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         assertThat(btn).isEnabled();
         
         System.out.println(">>> Button is enabled. Clicking Continue...");
-        btn.click();
+        
+        btn.scrollIntoViewIfNeeded();
+        btn.click(new Locator.ClickOptions().setForce(true));
     }
 
     public void clickContinueBtn() {
@@ -200,8 +203,9 @@ public class PersonalizeItemModal extends BasePage {
     }
 
     public void fillTextAreaByLabel(String labelText, String value) {
-        String selector = String.format("tr:has(.pers-title:has-text('%s')) + tr textarea", labelText);
-        Locator input = getLocator(selector);
+        String selector = String.format("tr:has(.pers-title:has-text('%s')) + tr textarea, textarea[data-val-required*='%s']", labelText, labelText);
+        Locator input = getLocator(selector).first();
+        input.scrollIntoViewIfNeeded();
         input.clear();
         input.fill(value);
         input.press("Tab");

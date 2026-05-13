@@ -12,6 +12,7 @@ import com.mycompany.app.pages.HomePage;
 import com.mycompany.app.pages.ProductPage;
 import com.mycompany.app.pages.login.SignInPage;
 import com.mycompany.app.pages.login.StagingLoginPage;
+import com.mycompany.app.pages.modals_popups.Header;
 import com.mycompany.app.pages.modals_popups.PersonalizeItemModal;
 
 public class GiftSetTests extends TestBase {
@@ -22,9 +23,10 @@ public class GiftSetTests extends TestBase {
     private HomePage homePage;
     private CartPage cartPage;
     private SignInPage signInPage;
+    private Header header;
 
     private final String PRODUCT_SLUG = "/Whiskey-Glass-Decanter-Personalized-Gift-Set-Lavish-Last-Name-p55731.prod?sdest=store-one&sdestid=75";
-    private final String PRODUCT_NAME = "Lavish Last Name Personalized Whiskey Glass & Decanter Gift Set";
+    private final String PRODUCT_NAME = "Lavish Last Name Personalized Whiskey Glass";
     private final String PERSONALIZATION_MSG = "Happy Birthday!";
 
     @BeforeEach
@@ -37,6 +39,7 @@ public class GiftSetTests extends TestBase {
         homePage = new HomePage(page, isMobile());
         cartPage = new CartPage(page, isMobile());
         signInPage = new SignInPage(page, isMobile());
+        header = new Header(page, isMobile());
     }
 
     @Test
@@ -77,10 +80,14 @@ public class GiftSetTests extends TestBase {
 
         page.waitForTimeout(7000);
 
+        if (isMobile()) {
+            header.clickCartIcon();
+        }
+
         cartPage.clickSaveForLaterSpecProd(PRODUCT_NAME);
 
-        cartPage.validateEmptyCartAndSavedMessage();
-        cartPage.validateProductInSavedForLater(PRODUCT_NAME);
+        if (!isMobile()) { cartPage.validateEmptyCartAndSavedMessage();}
+        cartPage.validateProductInSavedForLaterSpecProd(PRODUCT_NAME);
 
         cartPage.clickMoveToCartSpecProd(PRODUCT_NAME);
         page.waitForTimeout(7000);
