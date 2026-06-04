@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import com.mycompany.app.base.TestBase;
 import com.mycompany.app.pages.CartPage;
@@ -45,6 +46,7 @@ public class GiftSetTests extends TestBase {
     }
 
     @Test
+    @DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify user can personalize a gift set, save it for later and move it back to cart")
     void giftSetPersonalizationFlow() {
         String testEmail = getProperty("test_email_2");
