@@ -2,6 +2,7 @@ package com.mycompany.app.tests;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitUntilState;
@@ -25,6 +26,7 @@ public class CreateAccountsTests extends TestBase {
     private Header header;
 
     @Test
+    @DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify user can checkout as a guest")
     void createGuestAccount() {
 
@@ -75,6 +77,7 @@ public class CreateAccountsTests extends TestBase {
     }
 
     @Test
+    @DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify user can create a new account")
     void createNewAccount() {
 
