@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import com.mycompany.app.base.TestBase;
@@ -54,6 +55,7 @@ public class PostOrderActionsTests extends TestBase {
     }
 
     @Test
+    @DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify 'Write a Review' button redirects to review page")
     void validateWriteReview() {
 
@@ -63,6 +65,7 @@ public class PostOrderActionsTests extends TestBase {
     }
 
     @Test
+    @DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify 'Report Issue' button redirects to remake page")
     void validateReportIssue() {
 
@@ -72,6 +75,7 @@ public class PostOrderActionsTests extends TestBase {
     }
 
     @Test
+    @DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify 'Re-order Item' button redirects to re-order page")
     void reorderItem() {
 
