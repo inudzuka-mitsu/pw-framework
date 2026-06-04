@@ -22,7 +22,13 @@ public class ProductSearchTests extends TestBase {
 
         String productName = "Socks";
 
-        page.navigate(getProperty("stagingBaseUrl"));
+        String env = System.getProperty("env", "stg");
+        
+        if ("prod".equalsIgnoreCase(env)) {
+            page.navigate(getProperty("baseUrl"));
+        } else {
+            page.navigate(getProperty("stagingBaseUrl"));
+        }
         lp.closePopUp();
         hp.typeProduct(productName);
 
