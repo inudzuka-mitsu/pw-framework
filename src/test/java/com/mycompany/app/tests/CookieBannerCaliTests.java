@@ -47,13 +47,18 @@ public class CookieBannerCaliTests extends TestBase {
             );
         });
 
-        page.navigate(getProperty("stagingBaseUrl"));
+        String env = System.getProperty("env", "stg");
+        
+        if ("prod".equalsIgnoreCase(env)) {
+            page.navigate(getProperty("baseUrl"));
+        } else {
+            page.navigate(getProperty("stagingBaseUrl"));
+        }
 
         StagingLoginPage loginPage = new StagingLoginPage(page);
         loginPage.closePopUp();
 
-        Locator cookieHeader = page.frameLocator("iframe[name='trustarc_cm']")
-                                 .locator(".mainHeader.consentHeader h1");
+        Locator cookieHeader = page.locator("#cookieMainHeader h1");
     
         assertThat(cookieHeader).isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(10000));
         assertThat(cookieHeader).containsText("Cookies and Related Technologies on This Site");
