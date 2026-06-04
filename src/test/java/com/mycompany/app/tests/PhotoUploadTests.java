@@ -31,7 +31,13 @@ public class PhotoUploadTests extends TestBase {
         String PRODUCT_URL = getProperty("baseUrl") + "/Family-Photo-Personalized-Coffee-Mugs-p25561.prod?sdest=dept&sdestid=2115&storeid=34&categoryid=2115";
         String photoPath = System.getProperty("user.dir") + "/src/test/resources/lake.jpg";
 
-        page.navigate(getProperty("stagingBaseUrl"));
+         String env = System.getProperty("env", "stg");
+        
+        if ("prod".equalsIgnoreCase(env)) {
+            page.navigate(getProperty("baseUrl"));
+        } else {
+            page.navigate(getProperty("stagingBaseUrl"));
+        }
         stagingLoginPage.closePopUp();
 
         page.navigate(PRODUCT_URL);
