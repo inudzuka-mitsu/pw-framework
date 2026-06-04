@@ -1,6 +1,7 @@
 package com.mycompany.app.tests;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import com.mycompany.app.base.TestBase;
 import com.mycompany.app.pages.CartPage;
@@ -40,6 +41,7 @@ public class ProductPersonalizationTests extends TestBase {
     private final String UPDATED_THREAD_COLOR = "White";
 
    @Test
+   @DisabledIfSystemProperty(named = "env", matches = "prod")
     void personalizeItem() {
         stagingLoginPage = new StagingLoginPage(page);
         signInPage = new SignInPage(page, isMobile());
@@ -107,7 +109,13 @@ public class ProductPersonalizationTests extends TestBase {
 
         String PRODUCT_URL = getProperty("baseUrl") + "/Crossed-Clubs-Embroidered-Golf-Towel-p28855.prod?sdest=search-op&sdestid=117478940";
 
-        page.navigate(getProperty("stagingBaseUrl"));
+        String env = System.getProperty("env", "stg");
+        
+        if ("prod".equalsIgnoreCase(env)) {
+            page.navigate(getProperty("baseUrl"));
+        } else {
+            page.navigate(getProperty("stagingBaseUrl"));
+        }
         stagingLoginPage.closePopUp();
 
         page.navigate(PRODUCT_URL);
