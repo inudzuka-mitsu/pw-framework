@@ -2,6 +2,7 @@ package com.mycompany.app.tests;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitUntilState;
@@ -22,6 +23,7 @@ public class ShippingAddressTests extends TestBase {
     private AddressModal shippingPage;
 
     @Test
+    @DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify user can add a new shipping address")
     void addShippingAddress() {
         signInPage = new SignInPage(page, isMobile());
@@ -74,6 +76,7 @@ public class ShippingAddressTests extends TestBase {
     }
 
     @Test
+    @DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify user can edit a shipping address")
     void editShippingAddress() throws InterruptedException {
         signInPage = new SignInPage(page, isMobile());
