@@ -30,7 +30,10 @@ public class SdestTests extends TestBase {
         forHerPage = new ForHerPage(page, isMobile());
         pcp = new ProductCatalogPage(page, isMobile());
 
-        page.navigate(getProperty("stagingBaseUrl"), new com.microsoft.playwright.Page.NavigateOptions()
+        String env = System.getProperty("env", "stg");
+        String baseUrl = "prod".equalsIgnoreCase(env) ? getProperty("baseUrl") : getProperty("stagingBaseUrl");
+
+        page.navigate(baseUrl, new com.microsoft.playwright.Page.NavigateOptions()
             .setWaitUntil(com.microsoft.playwright.options.WaitUntilState.DOMCONTENTLOADED));
         
         stagingLoginPage.closePopUp();
@@ -58,8 +61,8 @@ public class SdestTests extends TestBase {
         pcp.clickFirstProduct();
 
         String expectedUrlRegex = isMobile() 
-                ? ".*productid=\\d+&sdest=.*&sdestid=.*"   // Mobile pattern
-                : ".*prod\\?sdest=.*&sdestid=.*";          // Desktop pattern
+                ? ".*productid=\\d+&sdest=.*&sdestid=.*"   
+                : ".*prod\\?sdest=.*&sdestid=.*";         
 
     
         assertThat(page).hasURL(Pattern.compile(expectedUrlRegex));
