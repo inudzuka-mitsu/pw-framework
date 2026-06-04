@@ -2,6 +2,7 @@ package com.mycompany.app.tests;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import com.mycompany.app.base.TestBase;
 import com.mycompany.app.pages.CartPage;
@@ -39,6 +40,7 @@ public class ProductDesignTests extends TestBase {
     private Header header;
 
     @Test
+    @DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify user can design a wedding photo book and complete checkout")
     void designItem() {
         String PRODUCT_URL = getProperty("baseUrl") + "/Our-Wedding-Chronicle-Personalized-Photo-Book-p59192.prod?sdest=dept&sdestid=2787&storeid=77&categoryid=2787";
@@ -92,6 +94,7 @@ public class ProductDesignTests extends TestBase {
     }
 
     @Test
+    @DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify user can change shipping address during checkout")
     void changeShippingAddress() {
         String PRODUCT_URL = getProperty("baseUrl") + "/Our-Wedding-Chronicle-Personalized-Photo-Book-p59192.prod?sdest=dept&sdestid=2787&storeid=77&categoryid=2787";
@@ -142,6 +145,7 @@ public class ProductDesignTests extends TestBase {
     }
 
     @Test
+    @DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify user can design a coffee mug")
     void designMug() {
         String PRODUCT_URL = getProperty("baseUrl") + "/Design-Your-Own-Personalized-Coffee-Mug-11oz-White-i39099.item?productid=14671";
