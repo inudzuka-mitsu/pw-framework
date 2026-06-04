@@ -33,7 +33,13 @@ public class FileUploadTests extends TestBase {
         String PRODUCT_URL = getProperty("baseUrl") + "/Personalized-Photo-Gifts-s34.store";
         String photoPath = System.getProperty("user.dir") + "/src/test/resources/lake.jpg";
 
-        page.navigate(getProperty("stagingBaseUrl"));
+        String env = System.getProperty("env", "stg");
+        
+        if ("prod".equalsIgnoreCase(env)) {
+            page.navigate(getProperty("baseUrl"));
+        } else {
+            page.navigate(getProperty("stagingBaseUrl"));
+        }
         stagingLoginPage.closePopUp();
 
         page.navigate(PRODUCT_URL);
