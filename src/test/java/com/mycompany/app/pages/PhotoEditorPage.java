@@ -29,6 +29,7 @@ public class PhotoEditorPage extends BasePage {
     
     // Desktop-Specific Studio Locators
     private final String photoTab = "//button[contains(text(), 'Photos')]"; 
+    private final String designTab = "//button[contains(text(), 'Design')]"; 
     private final String addPhotoLaterBtn = "button:has-text('Add Photos Later')";
     private final String libraryPhotoSource = ".LibraryPhotosList .PhotoPreview";
     private final String productPhotoSlot = ".PhotoSlot";
@@ -48,6 +49,7 @@ public class PhotoEditorPage extends BasePage {
     }
 
     public void selectCategory(String categoryName) {
+        page.waitForTimeout(5000);
         System.out.println("Selecting category: " + categoryName);
         Locator dropdown = getEditorFrame().locator(categoryDropdown).first();
         dropdown.scrollIntoViewIfNeeded();
@@ -55,6 +57,7 @@ public class PhotoEditorPage extends BasePage {
     }
 
     public void selectFirstLibraryMessage() {
+        page.waitForTimeout(5000);
         System.out.println("Selecting the first message from the library...");
         Locator listItems = getEditorFrame().locator(libraryMessageList);
         listItems.first().waitFor();
@@ -71,6 +74,18 @@ public class PhotoEditorPage extends BasePage {
         if (!isMobile) {
             System.out.println("Switching to Photo Tab...");
             Locator tab = getEditorFrame().locator(photoTab).first();
+            tab.waitFor();
+            tab.click(new Locator.ClickOptions().setForce(true));
+        } else {
+            Locator btn = getEditorFrame().locator("button.PhotoSlot").first();
+            btn.click(new Locator.ClickOptions().setForce(true));
+        }
+    }
+
+    public void clickDesignTab() {
+        if (!isMobile) {
+            System.out.println("Switching to Design Tab...");
+            Locator tab = getEditorFrame().locator(designTab).first();
             tab.waitFor();
             tab.click(new Locator.ClickOptions().setForce(true));
         } else {

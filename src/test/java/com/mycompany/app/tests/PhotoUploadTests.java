@@ -44,6 +44,7 @@ public class PhotoUploadTests extends TestBase {
         productPage.clickPersonalizeBtn();
 
         photoEditorPage.clickAddPhotoLater();
+        if (!isMobile()) { photoEditorPage.clickDesignTab();}
         photoEditorPage.selectCategory("Anniversary");
         photoEditorPage.selectFirstLibraryMessage();
         photoEditorPage.clickPhotoTab();
