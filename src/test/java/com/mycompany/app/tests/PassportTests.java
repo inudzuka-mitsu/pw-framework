@@ -30,7 +30,13 @@ public class PassportTests extends TestBase {
 
         String ITEM_PRICE = "$19.99";
 
-        page.navigate(getProperty("stagingBaseUrl"));
+        String env = System.getProperty("env", "stg");
+        
+        if ("prod".equalsIgnoreCase(env)) {
+            page.navigate(getProperty("baseUrl"));
+        } else {
+            page.navigate(getProperty("stagingBaseUrl"));
+        }
         stagingLoginPage.closePopUp();
 
         footer.clickCelebrationsPassport();
