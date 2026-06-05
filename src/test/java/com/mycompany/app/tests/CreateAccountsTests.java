@@ -26,7 +26,7 @@ public class CreateAccountsTests extends TestBase {
     private Header header;
 
     @Test
-    @DisabledIfSystemProperty(named = "env", matches = "prod")
+    //@DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify user can checkout as a guest")
     void createGuestAccount() {
 
@@ -53,8 +53,13 @@ public class CreateAccountsTests extends TestBase {
                          city + ", " + state + " " + zipCode + " " + 
                          phoneNumber;
 
-        page.navigate(getProperty("stagingBaseUrl"), 
-            new Page.NavigateOptions().setWaitUntil(WaitUntilState.DOMCONTENTLOADED));
+        String env = System.getProperty("env", "stg");
+        
+        if ("prod".equalsIgnoreCase(env)) {
+            page.navigate(getProperty("baseUrl"));
+        } else {
+            page.navigate(getProperty("stagingBaseUrl"));
+        }
     
         page.navigate(getProperty("baseUrl") + "/Register.aspx?");
 
