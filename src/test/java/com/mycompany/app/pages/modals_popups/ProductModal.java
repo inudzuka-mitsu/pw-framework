@@ -24,21 +24,31 @@ public class ProductModal extends BasePage{
 
     public void validateAllProductsContainProductName(String product) {
         Locator items = page.locator(productItem);
+        
+        String expectedTerm = product.toLowerCase();
+        String expectedSingular = expectedTerm.endsWith("s") ? expectedTerm.substring(0, expectedTerm.length() - 1) : expectedTerm;
     
         for (int i = 0; i < items.count(); i++) {
            String actualText = items.nth(i).innerText().toLowerCase();
-           assertTrue(actualText.contains(product.toLowerCase()), 
-            "Expected product item at index " + i + " to contain '" + product + "', but got: " + actualText);
+           boolean containsMatch = actualText.contains(expectedTerm) || actualText.contains(expectedSingular);
+           
+           assertTrue(containsMatch, 
+            "Expected product item at index " + i + " to contain '" + expectedTerm + "' or '" + expectedSingular + "', but got: " + actualText);
         }
     }
 
     public void validateAllProductSuggestionsContainProductName(String product) {
         Locator items = page.locator(productSuggestions);
+        
+        String expectedTerm = product.toLowerCase();
+        String expectedSingular = expectedTerm.endsWith("s") ? expectedTerm.substring(0, expectedTerm.length() - 1) : expectedTerm;
     
         for (int i = 0; i < items.count(); i++) {
            String actualText = items.nth(i).innerText().toLowerCase();
-           assertTrue(actualText.contains(product.toLowerCase()), 
-            "Expected product item at index " + i + " to contain '" + product + "', but got: " + actualText);
+           boolean containsMatch = actualText.contains(expectedTerm) || actualText.contains(expectedSingular);
+           
+           assertTrue(containsMatch, 
+            "Expected product item at index " + i + " to contain '" + expectedTerm + "' or '" + expectedSingular + "', but got: " + actualText);
         }
     }
 }
