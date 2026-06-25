@@ -26,7 +26,7 @@ public class CreateAccountsTests extends TestBase {
     private Header header;
 
     @Test
-    //@DisabledIfSystemProperty(named = "env", matches = "prod")
+    @DisabledIfSystemProperty(named = "env", matches = "prod")
     @DisplayName("Verify user can checkout as a guest")
     void createGuestAccount() {
 
